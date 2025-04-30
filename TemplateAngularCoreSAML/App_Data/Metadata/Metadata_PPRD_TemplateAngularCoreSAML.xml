@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                     entityID="https://templateangularnetcoresaml.azurewebsites.net/Auth/AssertionConsumerService">
+  <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true"
+	                    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            MIIDrTCCApWgAwIBAgIUFxnKoAjzDevG/HPz4wwxqWr4EhwwDQYJKoZIhvcNAQELBQAwZTELMAkGA1UEBhMCTVgxCzAJBgNVBAgMAk5MMQwwCgYDVQQHDANNVFkxGTAXBgNVBAoMEFRlYyBkZSBNb250ZXJyZXkxDTALBgNVBAsMBERIVEkxETAPBgNVBAMMCFRlbXBsYXRlMCAXDTIyMDMxMTE4NDM1N1oYDzIwNzIwMjI3MTg0MzU3WjBlMQswCQYDVQQGEwJNWDELMAkGA1UECAwCTkwxDDAKBgNVBAcMA01UWTEZMBcGA1UECgwQVGVjIGRlIE1vbnRlcnJleTENMAsGA1UECwwEREhUSTERMA8GA1UEAwwIVGVtcGxhdGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC/UwwanR7aUvM+XJ2JjlqN70CyUwaT0hELjo7Yn9sLd4B7hiXvdQsuI83eTxoSF91Ch+GystoziqkASjJ8jv2JKuelu0IwbuEkeCYjaKqVINB/x3H0x8u12VVkf6xm6H3bZlaXxQOn+zf0Jz1XADNIUJ0SUi7gCGT90QdceXaoTKtiOtnwYqXrFSz4QuZT4AWnO/u+hpM6nBaJXDHdUXvkI6A2CyMe4CR6AV93sVXupWkYp84V7s5k4j6H7jMdvS7A85XxNn7gdfaFknocStNL2A+9qeMmqKN+aHl2pywkfir0Uh9/MkCIsvFaAEgpMPV42HLZtcYNs6Kfedh0D6vlAgMBAAGjUzBRMB0GA1UdDgQWBBQgYVRQOdopecfnkmDPDNx2q/IEfzAfBgNVHSMEGDAWgBQgYVRQOdopecfnkmDPDNx2q/IEfzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCg2uPTEuMARqGH5qL1XtEg7RGeZ8CL9nc/Ysv3c7w60m/2BY5iTNHq/5Xx+inSnkkeKEz2lrOwhRaGP7h2owbA9CxAyb22Cd1ca833UDxRxsdOKmnNg8YWBNQ1xkge6K25tMOC8fzDY58VzKwLZlVtPafx2SvAdO30269U9T7aPn2mGwSB4xSVqyuKnql2JHwbSnCRlO9Ha7YU+KFNyzmbUChqL4sOfTZhuiAxzu5j4tWbKKZl9O45GYwTbmhTKi94iUNGFVU5OTT3rKgALKZWFlcp5CrK3CI3vjLFaRAeLYVaJt28z1mMGSI9fPmpgLVGFz0s99vK3uBavwEdUqM9
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            MIIDrTCCApWgAwIBAgIUFxnKoAjzDevG/HPz4wwxqWr4EhwwDQYJKoZIhvcNAQELBQAwZTELMAkGA1UEBhMCTVgxCzAJBgNVBAgMAk5MMQwwCgYDVQQHDANNVFkxGTAXBgNVBAoMEFRlYyBkZSBNb250ZXJyZXkxDTALBgNVBAsMBERIVEkxETAPBgNVBAMMCFRlbXBsYXRlMCAXDTIyMDMxMTE4NDM1N1oYDzIwNzIwMjI3MTg0MzU3WjBlMQswCQYDVQQGEwJNWDELMAkGA1UECAwCTkwxDDAKBgNVBAcMA01UWTEZMBcGA1UECgwQVGVjIGRlIE1vbnRlcnJleTENMAsGA1UECwwEREhUSTERMA8GA1UEAwwIVGVtcGxhdGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC/UwwanR7aUvM+XJ2JjlqN70CyUwaT0hELjo7Yn9sLd4B7hiXvdQsuI83eTxoSF91Ch+GystoziqkASjJ8jv2JKuelu0IwbuEkeCYjaKqVINB/x3H0x8u12VVkf6xm6H3bZlaXxQOn+zf0Jz1XADNIUJ0SUi7gCGT90QdceXaoTKtiOtnwYqXrFSz4QuZT4AWnO/u+hpM6nBaJXDHdUXvkI6A2CyMe4CR6AV93sVXupWkYp84V7s5k4j6H7jMdvS7A85XxNn7gdfaFknocStNL2A+9qeMmqKN+aHl2pywkfir0Uh9/MkCIsvFaAEgpMPV42HLZtcYNs6Kfedh0D6vlAgMBAAGjUzBRMB0GA1UdDgQWBBQgYVRQOdopecfnkmDPDNx2q/IEfzAfBgNVHSMEGDAWgBQgYVRQOdopecfnkmDPDNx2q/IEfzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCg2uPTEuMARqGH5qL1XtEg7RGeZ8CL9nc/Ysv3c7w60m/2BY5iTNHq/5Xx+inSnkkeKEz2lrOwhRaGP7h2owbA9CxAyb22Cd1ca833UDxRxsdOKmnNg8YWBNQ1xkge6K25tMOC8fzDY58VzKwLZlVtPafx2SvAdO30269U9T7aPn2mGwSB4xSVqyuKnql2JHwbSnCRlO9Ha7YU+KFNyzmbUChqL4sOfTZhuiAxzu5j4tWbKKZl9O45GYwTbmhTKi94iUNGFVU5OTT3rKgALKZWFlcp5CrK3CI3vjLFaRAeLYVaJt28z1mMGSI9fPmpgLVGFz0s99vK3uBavwEdUqM9
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+		                        Location="https://templateangularnetcoresaml.azurewebsites.net/Auth/SingleLogout"
+		                        ResponseLocation="https://templateangularnetcoresaml.azurewebsites.net/Auth/LoggedOut"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+		                             Location="https://templateangularnetcoresaml.azurewebsites.net/Auth/AssertionConsumerService"
+		                             index="0"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
