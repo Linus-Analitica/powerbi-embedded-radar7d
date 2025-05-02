@@ -1,0 +1,28 @@
+# -----------------------
+# Etapa para API .NET Core
+# -----------------------
+    FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS api-dev
+
+    WORKDIR /app
+    
+    COPY AngularCoreSAML/Api/*.csproj ./
+    RUN dotnet restore
+    
+    COPY AngularCoreSAML/Api/ ./
+    
+    CMD ["dotnet", "watch", "run"]
+    
+    
+    # -----------------------
+    # Etapa para Angular
+    # -----------------------
+    FROM node:23-slim AS web-dev
+    
+    WORKDIR /app
+    
+    COPY AngularCoreSAML/ClientApp/package*.json ./
+    RUN npm install
+    
+    COPY AngularCoreSAML/ClientApp/ ./
+    
+    CMD ["npm", "start"]

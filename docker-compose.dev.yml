@@ -1,0 +1,32 @@
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: web-dev
+    ports:
+      - "4200:4200"
+    working_dir: /app
+    volumes:
+      - "/app/node_modules"
+      - "./AngularCoreSAML/ClientApp:/app"
+    networks:
+      - net_angular_network
+    command: npm start
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: api-dev
+    ports:
+      - "5000:80"
+    working_dir: /app
+    volumes:
+      - ./AngularCoreSAML/Api:/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+networks:
+  net_angular_network:
