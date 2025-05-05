@@ -1,28 +1,21 @@
-# -----------------------
-# Etapa para API .NET Core
-# -----------------------
-    FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS api-dev
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 
-    WORKDIR /app
-    
-    COPY AngularCoreSAML/Api/*.csproj ./
-    RUN dotnet restore
-    
-    COPY AngularCoreSAML/Api/ ./
-    
-    CMD ["dotnet", "watch", "run"]
-    
-    
-    # -----------------------
-    # Etapa para Angular
-    # -----------------------
-    FROM node:23-slim AS web-dev
-    
-    WORKDIR /app
-    
-    COPY AngularCoreSAML/ClientApp/package*.json ./
-    RUN npm install
-    
-    COPY AngularCoreSAML/ClientApp/ ./
-    
-    CMD ["npm", "start"]
+# Instala Node.js y Angular CLI
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g @angular/cli
+
+# Crea carpeta de trabajo
+WORKDIR /app
+
+# Copia todo el proyecto (aunque usarás bind mount después)
+COPY . .
+
+# Restaura dependencias de .NET y Angular
+RUN dotnet restore
+RUN npm install --prefix ClientApp
+
+# Abre bash por defecto (para uso interactivo manual)
+CMD [ "bash" ]

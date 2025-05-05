@@ -142,3 +142,38 @@ En un explorador *(Chrome, Firefox, Safari, etc.)* tener una sesión iniciada en
 # Demo
 
 https://templateangularnetcoresaml.azurewebsites.net
+
+
+
+# 🧪 Template Angular + ASP.NET Core (SAML)
+
+Proyecto que combina Angular y ASP.NET Core (.NET 8) con autenticación SAML, usando Docker para desarrollo.
+
+## 🚀 Instrucciones para desarrollo local con Docker
+
+```bash
+# 1. Levanta el contenedor en modo desarrollo
+docker-compose -f docker-compose.dev.yml up --build
+
+# 2. Abre Terminal 1 y entra al contenedor
+docker exec -it <container_id> bash
+
+# 3. Dentro del contenedor, genera el certificado y ejecuta .NET con hot reload
+dotnet dev-certs https
+dotnet watch run
+
+# 4. Abre Terminal 2 y entra nuevamente al contenedor
+docker exec -it <container_id> bash
+
+# 5. Instala dependencias de Angular y levanta el frontend
+npm install --prefix ClientApp
+npm start --prefix ClientApp
+
+```
+
+## 🚀 Instrucciones para desarrollo sin contendor
+ ### ir al archivo Startup.cs y dejarlo asi 
+ ```bash
+ if (env.IsDevelopment())
+                    spa.UseAngularCliServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");

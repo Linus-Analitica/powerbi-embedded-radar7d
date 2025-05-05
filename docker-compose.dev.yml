@@ -1,32 +1,16 @@
 services:
-  angular:
+  devbox:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      target: web-dev
     ports:
-      - "4200:4200"
-    working_dir: /app
+      - "5000:5000"  # ASP.NET backend
+      - "4200:4200"  # Angular frontend
     volumes:
-      - "/app/node_modules"
-      - "./AngularCoreSAML/ClientApp:/app"
-    networks:
-      - net_angular_network
-    command: npm start
-    depends_on:
-      - api
-
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      target: api-dev
-    ports:
-      - "5000:80"
-    working_dir: /app
-    volumes:
-      - ./AngularCoreSAML/Api:/app
+      - .:/app
+      - /app/ClientApp/node_modules  # Evita conflictos de permisos
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-networks:
-  net_angular_network:
+    working_dir: /app
+    stdin_open: true
+    tty: true
