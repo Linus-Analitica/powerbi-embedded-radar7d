@@ -1,0 +1,79 @@
+[2025-05-06 18:40:06.317 +00:00] [ERR] [] [TemplateAngularCoreSAML] Hosting failed to start 
+ System.InvalidOperationException: Unable to configure HTTPS endpoint. No server certificate was specified, and the default developer certificate could not be found or is out of date.
+To generate a developer certificate run 'dotnet dev-certs https'. To trust the certificate (Windows and macOS only) run 'dotnet dev-certs https --trust'.
+For more information on configuring HTTPS see https://go.microsoft.com/fwlink/?linkid=848054.
+   at Microsoft.AspNetCore.Hosting.ListenOptionsHttpsExtensions.UseHttps(ListenOptions listenOptions, Action`1 configureOptions)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2025-05-06 18:44:32.634 +00:00] [ERR] [] [TemplateAngularCoreSAML] Option 'port' has been specified multiple times. The value '46181' will be used.
+ 
+ [2025-05-06 18:44:32.846 +00:00] [ERR] [] [TemplateAngularCoreSAML] Warning: This is a simple server for use in testing or debugging Angular applications
+ 
+ [2025-05-06 18:44:32.847 +00:00] [ERR] [] [TemplateAngularCoreSAML] locally. It hasn't been reviewed for security issues.
+ 
+ [2025-05-06 18:44:32.847 +00:00] [ERR] [] [TemplateAngularCoreSAML] Binding this server to an open connection can result in compromising your application or
+ 
+ [2025-05-06 18:44:32.848 +00:00] [ERR] [] [TemplateAngularCoreSAML] computer. Using a different host than the one passed to the "--host" flag might result in
+ 
+ [2025-05-06 18:44:32.848 +00:00] [ERR] [] [TemplateAngularCoreSAML] websocket connection issues. You might need to use "--disable-host-check" if that's the
+ 
+ [2025-05-06 18:44:32.849 +00:00] [ERR] [] [TemplateAngularCoreSAML] case.
+ 
+ [2025-05-06 18:44:31.987 +00:00] [ERR] [] [TemplateAngularCoreSAML] - Generating browser application bundles (phase: setup)...
+ 
+ [2025-05-06 18:44:43.005 +00:00] [ERR] [] [TemplateAngularCoreSAML] ✔ Browser application bundle generation complete.
+ 
+ [2025-05-06 18:51:20.925 +00:00] [ERR] [] [TemplateAngularCoreSAML] Hosting failed to start 
+ System.InvalidOperationException: Unable to configure HTTPS endpoint. No server certificate was specified, and the default developer certificate could not be found or is out of date.
+To generate a developer certificate run 'dotnet dev-certs https'. To trust the certificate (Windows and macOS only) run 'dotnet dev-certs https --trust'.
+For more information on configuring HTTPS see https://go.microsoft.com/fwlink/?linkid=848054.
+   at Microsoft.AspNetCore.Hosting.ListenOptionsHttpsExtensions.UseHttps(ListenOptions listenOptions, Action`1 configureOptions)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2025-05-06 18:52:31.678 +00:00] [ERR] [] [TemplateAngularCoreSAML] Option 'port' has been specified multiple times. The value '40469' will be used.
+ 
+ [2025-05-06 18:52:31.769 +00:00] [ERR] [] [TemplateAngularCoreSAML] Warning: This is a simple server for use in testing or debugging Angular applications
+ 
+ [2025-05-06 18:52:31.771 +00:00] [ERR] [] [TemplateAngularCoreSAML] locally. It hasn't been reviewed for security issues.
+ 
+ [2025-05-06 18:52:31.771 +00:00] [ERR] [] [TemplateAngularCoreSAML] Binding this server to an open connection can result in compromising your application or
+ 
+ [2025-05-06 18:52:31.772 +00:00] [ERR] [] [TemplateAngularCoreSAML] computer. Using a different host than the one passed to the "--host" flag might result in
+ 
+ [2025-05-06 18:52:31.772 +00:00] [ERR] [] [TemplateAngularCoreSAML] websocket connection issues. You might need to use "--disable-host-check" if that's the
+ 
+ [2025-05-06 18:52:31.773 +00:00] [ERR] [] [TemplateAngularCoreSAML] case.
+ 
+ [2025-05-06 18:52:32.674 +00:00] [ERR] [] [TemplateAngularCoreSAML] - Generating browser application bundles (phase: setup)...
+ 
+ [2025-05-06 18:52:41.279 +00:00] [ERR] [] [TemplateAngularCoreSAML] ✔ Browser application bundle generation complete.
+ 
+ [2025-05-06 22:49:43.743 +00:00] [ERR] [] [TemplateAngularCoreSAML] Option 'port' has been specified multiple times. The value '44967' will be used.
+ 
+ [2025-05-06 22:49:43.895 +00:00] [ERR] [] [TemplateAngularCoreSAML] Warning: This is a simple server for use in testing or debugging Angular applications
+ 
+ [2025-05-06 22:49:43.896 +00:00] [ERR] [] [TemplateAngularCoreSAML] locally. It hasn't been reviewed for security issues.
+ 
+ [2025-05-06 22:49:43.896 +00:00] [ERR] [] [TemplateAngularCoreSAML] Binding this server to an open connection can result in compromising your application or
+ 
+ [2025-05-06 22:49:43.897 +00:00] [ERR] [] [TemplateAngularCoreSAML] computer. Using a different host than the one passed to the "--host" flag might result in
+ 
+ [2025-05-06 22:49:43.900 +00:00] [ERR] [] [TemplateAngularCoreSAML] websocket connection issues. You might need to use "--disable-host-check" if that's the
+ 
+ [2025-05-06 22:49:43.905 +00:00] [ERR] [] [TemplateAngularCoreSAML] case.
+ 
+ [2025-05-06 22:49:44.992 +00:00] [ERR] [] [TemplateAngularCoreSAML] - Generating browser application bundles (phase: setup)...
+ 
+ [2025-05-06 22:49:54.931 +00:00] [ERR] [] [TemplateAngularCoreSAML] ✔ Browser application bundle generation complete.
+ 
+ 

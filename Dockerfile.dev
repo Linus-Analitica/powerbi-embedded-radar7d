@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS radar_web_dev
 
 # Instala Node.js y Angular CLI
 RUN apt-get update && \

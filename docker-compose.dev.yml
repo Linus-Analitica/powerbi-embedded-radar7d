@@ -1,16 +1,23 @@
 services:
-  devbox:
+  radar7_web:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      target: radar_web_dev
+    container_name: radar7_web
     ports:
-      - "5000:5000"  # ASP.NET backend
-      - "4200:4200"  # Angular frontend
+      - "5001:5001"
+      - "5000:5000"
+      - "4200:4200"
     volumes:
       - .:/app
       - /app/ClientApp/node_modules  # Evita conflictos de permisos
+      - /app/bin    # evita conflictos con bin/ del host (opcional)
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     working_dir: /app
+    command: bash -c "dotnet dev-certs https && dotnet watch run"
     stdin_open: true
     tty: true
+networks:
+  radar7_net:
