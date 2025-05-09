@@ -13,6 +13,7 @@ services:
       - .:/app
       - /app/ClientApp/node_modules  # Evita conflictos de permisos
       - /app/bin    # evita conflictos con bin/ del host (opcional)
+      - /app/ClientApp/.angular/cache
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     working_dir: /app
