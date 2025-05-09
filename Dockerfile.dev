@@ -9,8 +9,7 @@ RUN apt-get update && \
 
 # Crea carpeta de trabajo
 WORKDIR /app
-
-# Copia todo el proyecto (aunque usarás bind mount después)
+    
 COPY . .
 
 # Restaura dependencias de .NET y Angular

@@ -41,7 +41,7 @@ namespace TemplateAngularCoreSAML.Common
                         // StringBuilder message = new();
                         // claims.ForEach(claim => { message.AppendFormat($"[ {claim.Type} - {claim.Value} ]", "\t"); });
                         // Log.Information($"Claims | {message}");
-
+                        Log.Information($"read Claims");
                         userClaims.PersonID = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("IDPersona".ToLower()))?.Value;
                         userClaims.UserType = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("TipoUsuario".ToLower()))?.Value;
                         userClaims.PayrollID = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("nameidentifier".ToLower()))?.Value;
