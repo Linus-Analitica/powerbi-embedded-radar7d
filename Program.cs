@@ -12,6 +12,22 @@ namespace TemplateAngularCoreSAML
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((context, config) =>
+                {
+                    var env = context.HostingEnvironment;
+
+                    // Construir config para poder leer KeyVaultUri desde appsettings.{env}.json
+                    var builtConfig = config.Build();
+
+                    if (env.IsProduction())
+                    {
+                        var keyVaultUri = builtConfig["KeyVaultUri"];
+                        if (!string.IsNullOrEmpty(keyVaultUri))
+                        {
+                            config.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
+                        }
+                    }
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
