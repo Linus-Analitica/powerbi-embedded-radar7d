@@ -6,19 +6,16 @@ namespace TemplateAngularCoreSAML.Common
     {
         public static string GetCertificateAbsolutePath(string certificateRelativePath)
         {
-            // Se obtiene la ruta donde se encuentra la DLL en ejecución.
-            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
-            string absolutePath;
+            // BaseDirectory apunta a la raíz de la app publicada (ej. wwwroot en Azure)
+            string basePath = AppContext.BaseDirectory;
 
-            // Esta validación es para revisar desde donde se esta ejecutando la DLL.
-            // Desde la Web App de Azure.
-            if (currentPath.Contains(@"\site\wwwroot\"))
-                absolutePath = currentPath + certificateRelativePath;
-            else
-                // Desde Debug
-                absolutePath = currentPath.Substring(0, currentPath.LastIndexOf("TemplateAngularCoreSAML") + 23) + certificateRelativePath;
+            // Elimina slash inicial en caso de estar presente
+            if (certificateRelativePath.StartsWith("/") || certificateRelativePath.StartsWith("\\"))
+            {
+                certificateRelativePath = certificateRelativePath.Substring(1);
+            }
 
-            return absolutePath;
+            return Path.Combine(basePath, certificateRelativePath);
         }
     }
 }
