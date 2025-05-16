@@ -15,6 +15,7 @@ import { BmbDividerComponent } from '@ti-tecnologico-de-monterrey-oficial/ds-ng'
 import { BmbToastComponent } from '@ti-tecnologico-de-monterrey-oficial/ds-ng';
 import { BmbTablesComponent } from '@ti-tecnologico-de-monterrey-oficial/ds-ng';
 import { BmbLoaderComponent } from '@ti-tecnologico-de-monterrey-oficial/ds-ng';
+import { BmbTopBarComponent } from '@ti-tecnologico-de-monterrey-oficial/ds-ng';
 //End Bamboo components
 import { BambooButtonComponent } from './components/bamboo-button/bamboo-button.component';
 import { BambooDividerComponent } from './components/bamboo-divider/bamboo-divider.component';
@@ -26,6 +27,10 @@ import { FederationComponent } from './components/federation/federation.componen
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { AppRoutingModule } from './app-routing.module';
+import { TopBarComponent } from "./components/topbar/topbar.component";
+import { ReportComponent } from './components/report/report.component';
+
+
 
 
 
@@ -41,6 +46,7 @@ import { AppRoutingModule } from './app-routing.module';
     FederationComponent,
     NotFoundPageComponent,
     LayoutComponent,
+    TopBarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -54,8 +60,12 @@ import { AppRoutingModule } from './app-routing.module';
     BmbToastComponent,
     BmbLoaderComponent,
     BmbTablesComponent,
+    BmbTopBarComponent,
+    ReportComponent,
     AppRoutingModule,
-  ],
+
+
+],
   providers: [
     provideHttpClient(withInterceptors([tokenApiInterceptor])),
   ],

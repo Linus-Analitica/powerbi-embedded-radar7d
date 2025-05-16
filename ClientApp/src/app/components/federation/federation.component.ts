@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-federation',
-  templateUrl: './federation.component.html'
+  templateUrl: './federation.component.html',
+
 })
 export class FederationComponent {
   constructor(private sessionService: SessionService, private notification: NotificationSnackbarService, private router: Router) {

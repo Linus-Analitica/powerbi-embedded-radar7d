@@ -1,0 +1,7 @@
+<div class="report-page-container">
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="isLoadingReport" class="loading-message">Cargando informe...</div> <!-- Loading message -->
+  <powerbi-report *ngIf="!isLoadingReport && !error" [embedConfig]="reportConfig" [cssClassName]="'report-container'"
+    (embedded)="onEmbedded($any($event))">
+  </powerbi-report>
+</div>

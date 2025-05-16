@@ -4,7 +4,8 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-bamboo-toast',
-  templateUrl: './bamboo-toast.component.html'
+  templateUrl: './bamboo-toast.component.html',
+
 })
 export class BambooToastComponent implements AfterViewInit {
   @ViewChild(BmbToastComponent)

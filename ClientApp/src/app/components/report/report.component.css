@@ -1,0 +1,32 @@
+.report-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.error-message {
+  color: #dc3545; /* Red error text */
+  padding: 1rem;
+  background-color: #f8d7da; /* Light red background */
+  border: 1px solid #f5c6cb; /* Red border */
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.report-container {
+  height: 99.2%;
+  width: 100%;
+}
+
+
+.loading-message { /* Added loading message styles */
+  padding: 1rem;
+  text-align: center;
+  font-style: italic;
+  color: #555; /* Grey loading text */
+}
+
+.content-container {
+  margin-top: 60px; /* Adjust based on your top bar height */
+  height: calc(100vh - 60px); /* Make content take the remaining height */
+}

@@ -1,5 +1,8 @@
+
 <div class="row h-100 justify-content-center align-items-center">
-  <div class="card text-white mb-3" style="max-width: 75rem; background-color: rgba(38, 37, 41, 0.8)">
+  <app-top-bar [currentUserClaims]="userClaims" (logoutClicked)="logOut()"></app-top-bar>
+ <!-- <div class="card text-white mb-3" style="max-width: 75rem; background-color: rgba(38, 37, 41, 0.8)">-->
+    <!--
     <h4 class="card-header text-center">
       Usuario
       <button type="submit" style="border: none; background-color: transparent;" (click)="logOut()">
@@ -25,5 +28,11 @@
                  [config]="{isSelectable: false, isExpandible: false, isPaginable: true, showActions: true}"
                  (select)="select($event)"></bmb-table>
     </div>
+  </div>
+</div>
+-->
+<!--<div class="row mt-4 justify-content-center">-->
+  <div class="col-12">
+    <app-report></app-report>
   </div>
 </div>

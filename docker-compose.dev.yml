@@ -6,12 +6,12 @@ services:
       target: radar_web_dev
     container_name: radar7_web
     ports:
-      - "5001:5001"
-      - "5000:5000"
-      - "4200:4200"
+      - "5005:5001"
+      - "5004:5000"
+      - "4201:4200"
     volumes:
       - .:/app
-      - /app/ClientApp/node_modules  # Evita conflictos de permisos
+      # - /app/ClientApp/node_modules  # Evita conflictos de permisos
       - /app/bin    # evita conflictos con bin/ del host (opcional)
       - /app/ClientApp/.angular/cache
     environment:

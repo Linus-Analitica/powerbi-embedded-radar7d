@@ -6,7 +6,8 @@ export interface Target {
 
 @Component({
   selector: 'app-bamboo-dot-paginator',
-  templateUrl: './bamboo-dot-paginator.component.html'
+  templateUrl: './bamboo-dot-paginator.component.html',
+
 })
 export class BambooDotPaginatorComponent {
   myActiveDotIndex: number = 0;
