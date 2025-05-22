@@ -101,16 +101,16 @@ namespace TemplateAngularCoreSAML
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
-            }); 
+            });
 
- 
+
 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
             IdentityModelEventSource.ShowPII = true; // Esto muestra el detalle de las posibles fallas en la federaci�n.
-            
+
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
@@ -120,7 +120,7 @@ namespace TemplateAngularCoreSAML
             }
 
             app.UseHttpsRedirection();
-            log.AddSerilog();          
+            log.AddSerilog();
             app.UseStaticFiles();
 
             if (!env.IsDevelopment())
@@ -163,7 +163,7 @@ namespace TemplateAngularCoreSAML
                 {
                     await next();
                 }
-           });
+            });
 #endif
             app.UseSpa(spa =>
             {
@@ -172,9 +172,9 @@ namespace TemplateAngularCoreSAML
 
                 if (env.IsDevelopment())
                     spa.UseAngularCliServer(npmScript: "start");
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
         }
-       
+
     }
 }
