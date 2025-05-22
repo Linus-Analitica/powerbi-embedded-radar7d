@@ -22,6 +22,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using TemplateAngularCoreSAML.Common;
+using TemplateAngularCoreSAML.Services;
 
 namespace TemplateAngularCoreSAML
 {
@@ -46,23 +47,23 @@ namespace TemplateAngularCoreSAML
             services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
             services.Configure<Saml2Configuration>(saml2Configuration =>
             {
-            try
-            {
-                saml2Configuration.Issuer = Configuration["Saml2:Issuer"];
-                saml2Configuration.SingleSignOnDestination = new Uri(Configuration["Saml2:SingleSignOnDestination"]);
-                saml2Configuration.SingleLogoutDestination = new Uri(Configuration["Saml2:SingleLogoutDestination"]);
-                saml2Configuration.SignatureAlgorithm = Configuration["Saml2:SignatureAlgorithm"];
-                saml2Configuration.SignAuthnRequest = Convert.ToBoolean(Configuration["Saml2:SignAuthnRequest"]);
-                saml2Configuration.SigningCertificate = CertificateUtil.Load(CommonHelper.GetCertificateAbsolutePath(Configuration["Saml2:SigningCertificateFile"]),
-                                                                                                                Configuration["Saml2:SigningCertificatePassword"],
-                                                                                                                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet |
-                                                                                                                X509KeyStorageFlags.PersistKeySet);
-                saml2Configuration.CertificateValidationMode = (X509CertificateValidationMode)Enum.Parse(typeof(X509CertificateValidationMode), Configuration["Saml2:CertificateValidationMode"]);
-                saml2Configuration.RevocationMode = (X509RevocationMode)Enum.Parse(typeof(X509RevocationMode), Configuration["Saml2:RevocationMode"]);
-                saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
-                var entityDescriptor = new EntityDescriptor();
-                entityDescriptor.ReadIdPSsoDescriptorFromUrl(new Uri(Configuration["Saml2:IdPMetadata"]));
-                //entityDescriptor.ReadIdPSsoDescriptorFromUrlAsync(_httpClientFactory, new Uri(Configuration["Saml2:IdPMetadata"])).GetAwaiter().GetResult();
+                try
+                {
+                    saml2Configuration.Issuer = Configuration["Saml2:Issuer"];
+                    saml2Configuration.SingleSignOnDestination = new Uri(Configuration["Saml2:SingleSignOnDestination"]);
+                    saml2Configuration.SingleLogoutDestination = new Uri(Configuration["Saml2:SingleLogoutDestination"]);
+                    saml2Configuration.SignatureAlgorithm = Configuration["Saml2:SignatureAlgorithm"];
+                    saml2Configuration.SignAuthnRequest = Convert.ToBoolean(Configuration["Saml2:SignAuthnRequest"]);
+                    saml2Configuration.SigningCertificate = CertificateUtil.Load(CommonHelper.GetCertificateAbsolutePath(Configuration["Saml2:SigningCertificateFile"]),
+                                                                                                                    Configuration["Saml2:SigningCertificatePassword"],
+                                                                                                                    X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet |
+                                                                                                                    X509KeyStorageFlags.PersistKeySet);
+                    saml2Configuration.CertificateValidationMode = (X509CertificateValidationMode)Enum.Parse(typeof(X509CertificateValidationMode), Configuration["Saml2:CertificateValidationMode"]);
+                    saml2Configuration.RevocationMode = (X509RevocationMode)Enum.Parse(typeof(X509RevocationMode), Configuration["Saml2:RevocationMode"]);
+                    saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
+                    var entityDescriptor = new EntityDescriptor();
+                    entityDescriptor.ReadIdPSsoDescriptorFromUrl(new Uri(Configuration["Saml2:IdPMetadata"]));
+                    //entityDescriptor.ReadIdPSsoDescriptorFromUrlAsync(_httpClientFactory, new Uri(Configuration["Saml2:IdPMetadata"])).GetAwaiter().GetResult();
                     if (entityDescriptor.IdPSsoDescriptor != null)
                     {
                         saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First().Location;
@@ -70,19 +71,22 @@ namespace TemplateAngularCoreSAML
                         saml2Configuration.SignatureValidationCertificates.AddRange(entityDescriptor.IdPSsoDescriptor.SigningCertificates);
                     }
                     else
-                        throw new Exception("No se carg� el IdPSsoDescriptor del metadata");                    
+                        throw new Exception("No se carg� el IdPSsoDescriptor del metadata");
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, e.Message);
                     throw;
-                }               
+                }
             });
 
             services.AddSaml2(slidingExpiration: true);
 
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
+            services.AddScoped<IPowerBiService, PowerBiService>();
+            services.AddScoped<ITokenHelper, TokenHelper>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowedOrigins",
@@ -98,6 +102,9 @@ namespace TemplateAngularCoreSAML
             {
                 configuration.RootPath = "ClientApp/dist";
             }); 
+
+ 
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
