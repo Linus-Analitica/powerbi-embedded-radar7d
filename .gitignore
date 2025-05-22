@@ -11,6 +11,7 @@
 *.userprefs
 appsettings.env
 *.env
+/*.txt
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
