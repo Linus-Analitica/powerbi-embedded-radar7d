@@ -5,14 +5,16 @@ services:
       dockerfile: Dockerfile.dev
       target: radar_web_dev
     container_name: radar7_web
+    env_file:
+      - .env
     ports:
       - "5001:5001"
       - "5000:5000"
       - "4200:4200"
     volumes:
       - .:/app
-      - /app/ClientApp/node_modules  # Evita conflictos de permisos
-      - /app/bin    # evita conflictos con bin/ del host (opcional)
+      - /app/ClientApp/node_modules
+      - /app/bin
       - /app/ClientApp/.angular/cache
     working_dir: /app
     command: bash -c "dotnet dev-certs https  && dotnet watch run"
