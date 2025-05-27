@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
 using Microsoft.Rest;
+using Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
@@ -38,15 +39,16 @@ namespace TemplateAngularCoreSAML.Common
 
             var clientApp = ConfidentialClientApplicationBuilder
                 .Create(_config["ConnectionPowerBi:ClientId"])
-                .WithClientSecret(_config["PowerBI:ClientSecret"])
+                .WithClientSecret(_config["ConnectionPowerBi:ClientSecret"])
                 .WithAuthority(new Uri($"https://login.microsoftonline.com/{_config["ConnectionPowerBi:TenantId"]}"))
                 .Build();
 
             var result = await clientApp.AcquireTokenForClient(new[] { "https://analysis.windows.net/powerbi/api/.default" }).ExecuteAsync();
 
             _cache.Set("PowerBiAccessToken", result.AccessToken, TimeSpan.FromMinutes(50)); // o result.ExpiresIn
-
+            Log.Error($"EL ACCESS TOKEN ES {result.AccessToken}");
             return result.AccessToken;
+
         }
 
         public async Task<(string Token, string EmbedUrl)> GenerateEmbedTokenAsync(string reportId, string workspaceId, string accessToken)
@@ -55,16 +57,24 @@ namespace TemplateAngularCoreSAML.Common
             using var client = new PowerBIClient(new Uri("https://api.powerbi.com/"), tokenCredentials);
 
             var report = await client.Reports.GetReportInGroupAsync(Guid.Parse(workspaceId), Guid.Parse(reportId));
-
             var generateTokenRequestParameters = new GenerateTokenRequestV2
             {
-                Reports = new List<GenerateTokenRequestV2Report>
-        {
-            new GenerateTokenRequestV2Report
-            {
-                Id = Guid.Parse(reportId)
-            }
-        }
+                Reports = new List<GenerateTokenRequestV2Report>{
+                    new GenerateTokenRequestV2Report{Id = Guid.Parse(reportId)}
+                },
+                Datasets = new List<GenerateTokenRequestV2Dataset>{
+                    new GenerateTokenRequestV2Dataset { Id = report.DatasetId }
+                },
+                TargetWorkspaces = new List<GenerateTokenRequestV2TargetWorkspace>{
+                    new GenerateTokenRequestV2TargetWorkspace { Id = Guid.Parse(workspaceId) }
+                },
+                Identities = new List<EffectiveIdentity>{
+                    new EffectiveIdentity{
+                        Username = "juan@example.com",
+                        Datasets = new List<string> { report.DatasetId },
+                        Roles = new List<string> { "Gerente" }
+                    }
+                }
             };
 
             var embedToken = await client.EmbedToken.GenerateTokenAsync(generateTokenRequestParameters);

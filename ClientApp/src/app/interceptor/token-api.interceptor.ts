@@ -8,12 +8,12 @@ export const tokenApiInterceptor: HttpInterceptorFn = (req, next) => {
   const usuario = sessionService.sessionData;
 
   // Condición para agregar el token
-  if (usuario !== undefined
-    && JSON.stringify(usuario) !== '{}'
-    && usuario?.token !== "" && usuario.token !== "" && req.url.includes(environment.urlApi)) {
-    req = addToken(req, usuario.token);
-    console.log('add token jwt');
-  }
+  // if (usuario !== undefined
+  //   && JSON.stringify(usuario) !== '{}'
+  //   && usuario?.token !== "" && usuario.token !== "" && req.url.includes(environment.urlApi)) {
+  //  // req = addToken(req, usuario.token);
+  //   console.log('add token jwt');
+  // }
 
   return next(req);
 };
