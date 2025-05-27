@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Rest;
+using Serilog;
+using System;
 using TemplateAngularCoreSAML.Services;
 
 
@@ -26,14 +28,36 @@ namespace TemplateAngularCoreSAML.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("radar7")]
-        public async Task<IActionResult> loadRadar7()
+        [HttpGet]
+        public async Task<IActionResult> loadCurrentReport()
         {
-            var ReportId = _configuration.GetSection("ConnectionPowerBi:ReportId").Get<string>();
-            var WorkspaceId = _configuration.GetSection("ConnectionPowerBi:WorkspaceId").Get<string>();
+            try
+            {
+                var ReportId = _configuration.GetSection("ConnectionPowerBi:ReportCurrentId").Get<string>();
+                var WorkspaceId = _configuration.GetSection("ConnectionPowerBi:WorkspaceId").Get<string>();
+                var result = await _powerBiService.GetTokenReporteAsync(ReportId, WorkspaceId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al generar el token" });
+            }
 
-            var result = await _powerBiService.GetTokenReporteAsync(ReportId, WorkspaceId);
-            return Ok(result);
+        }
+        public async Task<IActionResult> loadArchiveReport()
+        {
+            try
+            {
+                var ReportId = _configuration.GetSection("ConnectionPowerBi:ReportArchivedId").Get<string>();
+                var WorkspaceId = _configuration.GetSection("ConnectionPowerBi:WorkspaceId").Get<string>();
+                var result = await _powerBiService.GetTokenReporteAsync(ReportId, WorkspaceId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al generar el token" });
+            }
+
         }
     }
 }
