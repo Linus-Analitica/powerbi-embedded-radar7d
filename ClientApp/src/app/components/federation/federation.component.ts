@@ -3,7 +3,7 @@ import { SessionService } from '../../services/session.service';
 import { NotificationSnackbarService } from '../../services/notification-snackbar.service';
 import { ResponseApi } from '../../models/response-api.model';
 import { Router } from '@angular/router';
-import { UserClaims } from "../../models/user-claims.model";
+
 @Component({
   selector: 'app-federation',
   templateUrl: './federation.component.html'
@@ -11,8 +11,7 @@ import { UserClaims } from "../../models/user-claims.model";
 export class FederationComponent {
   constructor(private sessionService: SessionService, private notification: NotificationSnackbarService, private router: Router) {
     // Se obtiene los userclaims y el jwt del api
-    this.sessionService.getSessionUser().subscribe((response: ResponseApi<UserClaims>) => {
-      console.log(response)
+    this.sessionService.setSessionUser().subscribe((response: ResponseApi) => {
       if (response.succeeded) {
         const session = this.sessionService.createSessionUser(response);
         if (session) {

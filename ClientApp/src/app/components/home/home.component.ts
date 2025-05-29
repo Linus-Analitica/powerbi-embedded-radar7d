@@ -1,39 +1,37 @@
-import { Component, Input, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 // Models.
-import { UserClaims } from "../../models/user-claims.model";
+import { SessionUser, UserClaims } from '../../models/user-claims.model';
 
 // Services.
-import { SessionService } from "../../services/session.service";
-import { Report } from "../../models/report.model";
-import { NotificationSnackbarService } from "../../services/notification-snackbar.service";
-import { ReportBIService } from "../../services/reportBI.service";
-
-import * as powerbi from 'powerbi-client';
+import { SessionService } from '../../services/session.service';
+import { ResponseApi } from '../../models/response-api.model';
+import { NotificationSnackbarService } from '../../services/notification-snackbar.service';
+import { WeatherForecastService } from '../../services/weather-forecast.service';
+import { WeatherForecast } from '../../models/weather-forecast';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
+  selector: 'app-home',
+  templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-   @ViewChild('reportContainer', { static: true }) reportContainer!: ElementRef;
+
   userClaims: UserClaims;
-  weatherForecast = [];
+  weatherForecast: WeatherForecast;
   columns = [
-    { def: "date", label: "Fecha", dataKey: "date" },
-    { def: "temperatureC", label: "Temperatura (°C)", dataKey: "temperatureC" },
-    { def: "temperatureF", label: "Temperatura (°F)", dataKey: "temperatureF" },
-    { def: "summary", label: "Resumen", dataKey: "summary" },
+    { def: 'date', label: 'Fecha', dataKey: 'date' },
+    { def: 'temperatureC', label: 'Temperatura (°C)', dataKey: 'temperatureC' },
+    { def: 'temperatureF', label: 'Temperatura (°F)', dataKey: 'temperatureF' },
+    { def: 'summary', label: 'Resumen', dataKey: 'summary' },
   ];
 
-  constructor(
-    private sessionService: SessionService,
-    private notification: NotificationSnackbarService,
-    private reportBIService: ReportBIService
-  ) {}
+  constructor(private sessionService: SessionService, private notification: NotificationSnackbarService, private weatherForecastService: WeatherForecastService) {
+
+  }
 
   ngOnInit() {
-    this.userClaims == this.sessionService.sessionData;
+    const usuario: SessionUser = this.sessionService.sessionData;
+    this.userClaims = usuario.user;
     this.getData();
   }
 
@@ -42,34 +40,13 @@ export class HomeComponent implements OnInit {
   }
 
   getData() {
-    this.reportBIService.loadCurrentReport<Report>().subscribe((response) => {
-       const config: powerbi.IEmbedConfiguration = {
-          type: 'report',
-          id: response.ReportId,
-          embedUrl:response.EmbedUrl,
-          accessToken: response.EmbedToken,
-          tokenType: powerbi.models.TokenType.Embed,
-          settings: {
-            panes: {
-              filters: { visible: false },
-              pageNavigation: { visible: true }
-            }
-          }
-        };
-
-    const pbiService = new powerbi.service.Service(
-      powerbi.factories.hpmFactory,
-      powerbi.factories.wpmpFactory,
-      powerbi.factories.routerFactory
-    );
-
-    pbiService.embed(this.reportContainer.nativeElement, config);
-
-      console.log(response);
+    this.weatherForecastService.getWeatherForecast().subscribe((response: WeatherForecast) => {
+      this.weatherForecast = response;
+      this.notification.openSnackBar('Se obtienen los datos del API', 'primary');
     });
   }
 
   select($event) {
-    console.log("selected:", $event);
+    console.log('selected:', $event);
   }
 }

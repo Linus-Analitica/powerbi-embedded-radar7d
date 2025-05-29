@@ -37,7 +37,7 @@ namespace TemplateAngularCoreSAML.Controllers
         }
 
         [HttpGet]
-        public async Task<Models.Common.Response<UserClaims>> GetUserClaims()
+        public async Task<Models.Common.Response<UserClaims>> GetTokenApiAndUserClaims()
         {
             UserClaims userProfile = AuthHelper.GetClaims();
 
@@ -57,7 +57,13 @@ namespace TemplateAngularCoreSAML.Controllers
             var jsonData = JsonSerializer.Serialize(sendEncryptDto);
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            return new Models.Common.Response<UserClaims>(userProfile);
+            HttpClient client = new();
+            var response = await client.PostAsync($"{Configuration["ConnectionApi:Url"]}/Authentication/GetToken", stringContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            Models.Common.Response<string> resultApi = JsonSerializer.Deserialize<Models.Common.Response<string>>(responseContent, options);
+
+            return resultApi.Succeeded ? new Models.Common.Response<UserClaims>(userProfile, resultApi.Data) : new Models.Common.Response<UserClaims>(resultApi.Message);
         }
 
     }
