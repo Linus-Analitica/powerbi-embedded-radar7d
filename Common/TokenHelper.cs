@@ -74,8 +74,8 @@ namespace TemplateAngularCoreSAML.Common
                 },
                 Identities = new List<EffectiveIdentity>{
                     new EffectiveIdentity{
-                        Username = userProfile.PayrollID,
-                        Datasets = new List<string> { report.DatasetId },
+                        username = userProfile.PayrollID,
+                        datasets = new List<string> { report.DatasetId },
                         roles = new List<string> { report.UserType }
                     }
                 }
