@@ -9,9 +9,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-appsettings.env
-*.env
-/*.txt
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

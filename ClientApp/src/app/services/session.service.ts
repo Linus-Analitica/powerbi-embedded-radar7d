@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {  UserClaims } from '../models/user-claims.model';
+
+// Models.
+import { SessionUser, UserClaims } from '../models/user-claims.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ResponseApi } from '../models/response-api.model';
 import { parseJwt } from '../functions/DecodeJwt';
@@ -10,10 +12,10 @@ import { TokenData } from '../models/token-data.model';
   providedIn: 'root'
 })
 export class SessionService {
-  private usuarioSubject: BehaviorSubject<UserClaims>;
-  private EMPTY!: UserClaims;
+  private usuarioSubject: BehaviorSubject<SessionUser>;
+  private EMPTY!: SessionUser;
   constructor(private http: HttpClient) {
-    this.usuarioSubject = new BehaviorSubject<UserClaims>(
+    this.usuarioSubject = new BehaviorSubject<SessionUser>(
       JSON.parse(sessionStorage.getItem("sessionUser") ?? "{}")
     );
   }
@@ -30,22 +32,27 @@ export class SessionService {
     window.location.href = url;
   }
 
-  public getSessionUser(): Observable<ResponseApi<UserClaims>> {
-    return this.http.get<ResponseApi<UserClaims>>(`Home/GetUserClaims`);
+  public setSessionUser(): Observable<ResponseApi> {
+    return this.http.get<ResponseApi>(`Home/GetTokenApiAndUserClaims`);
   }
 
-  public get sessionData(): UserClaims {
+  public get sessionData(): SessionUser {
     return this.usuarioSubject.value;
   }
 
-  public createSessionUser(response: ResponseApi<UserClaims>): boolean {
+  public createSessionUser(response: ResponseApi): boolean {
     try {
-      const user: UserClaims = response.data;
+      const informationToken: TokenData = parseJwt(response.message);
+      const user: SessionUser = {
+        token: response.message,
+        user: response.data,
+        userId: informationToken.user,
+        payrollId: informationToken.payrollId,
+      };
       sessionStorage.setItem("sessionUser", JSON.stringify(user));
       this.usuarioSubject.next(user);
       return true;
     } catch (error) {
-      console.log(error)
       return false;
     }
   }

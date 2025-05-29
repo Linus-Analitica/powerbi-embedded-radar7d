@@ -1,17 +1,29 @@
-<div class="row h-90 justify-content-center align-items-center">
-  <div class="card text-white mb-3 ">
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="card text-white mb-3" style="max-width: 75rem; background-color: rgba(38, 37, 41, 0.8)">
     <h4 class="card-header text-center">
-      Seleccione su Reporte
+      Usuario
+      <button type="submit" style="border: none; background-color: transparent;" (click)="logOut()">
+        <i class="far fa-arrow-alt-circle-left" style="color: #D8A487; cursor: pointer;"></i>
+      </button>
     </h4>
+    <div class="card-body">
+      <p class="card-text"><b>Nómina:</b> {{ userClaims?.payrollID }}</p>
+      <p class="card-text"><b>ID Persona:</b> {{ userClaims?.personID }}</p>
+      <p class="card-text"><b>Email:</b> {{ userClaims?.email }}</p>
+      <p class="card-text"><b>Tipo Usuario:</b> {{ userClaims?.userType }}</p>
+      <p class="card-text"><b>Perfiles:</b> {{ userClaims?.profiles }}</p>
+    </div>
     <div class="card-footer text-center mb-2">
-      <button bmbButton appearance="primary" icon="home" size="small" position="left" [case]="false"
-        isToggleActive="false" enableButtonToggle="false" (click)="gotoCurrentReport()">
-        Actual
-      </button>
-      <button bmbButton appearance="primary" icon="home" size="small" position="left" [case]="false"
-        isToggleActive="false" enableButtonToggle="false" (click)="gotoArchiveReport()">
-        Historico
-      </button>
+      <h5>Bamboo ejemplos</h5>
+      <app-bamboo-divider />
+      <app-bamboo-badge style="margin: 10px;" />
+      <app-bamboo-button />
+      <app-bamboo-dot-paginator />
+      <h5>Datos del API</h5>
+      <bmb-table [data]="weatherForecast"
+                 [columns]="columns"
+                 [config]="{isSelectable: false, isExpandible: false, isPaginable: true, showActions: true}"
+                 (select)="select($event)"></bmb-table>
     </div>
   </div>
 </div>

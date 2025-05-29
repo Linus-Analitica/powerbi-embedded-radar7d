@@ -3,8 +3,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { FederationComponent } from './components/federation/federation.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HomeComponent } from './components/home/home.component';
-import { ReportComponent } from './components/report/report.component';
-
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { userSessionGuard } from './guard/user-session.guard';
 
@@ -23,10 +21,11 @@ const routes: Routes = [
         path: 'home',
         component: HomeComponent,
       },
-      {
-        path: 'report/:type',
-        component: ReportComponent,
-      },
+      //{
+      //  path: 'administration',
+      //  loadChildren: () => import('@modules/configuration/configuration.module').then((m) => m.ConfigurationModule),
+      //  canActivate: [UserSessionGuard]
+      //},
     ]
   },
   {
