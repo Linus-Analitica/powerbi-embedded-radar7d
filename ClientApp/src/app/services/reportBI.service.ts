@@ -22,9 +22,9 @@ public loadCurrentReport<T>(options: { [key: string]: any } = {}): Observable<T>
     );
 }
 
-public loadArchiveReport<T>(options: { [key: string]: any } = {}): Observable<T> {
+public loadArchivedReport<T>(options: { [key: string]: any } = {}): Observable<T> {
   return this.httpClient
-    .get<ResponseApi<T>>('/PowerBI/loadArchiveReport', { params: options })
+    .get<ResponseApi<T>>('/PowerBI/loadArchivedReport', { params: options })
     .pipe(
       map((response) => response.data)
     );

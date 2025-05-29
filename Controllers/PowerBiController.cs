@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 using Serilog;
 using System;
+using TemplateAngularCoreSAML.Common;
 using TemplateAngularCoreSAML.Services;
-
+using TemplateAngularCoreSAML.Models.Dtos;
 
 namespace TemplateAngularCoreSAML.Controllers
 {
@@ -29,34 +30,20 @@ namespace TemplateAngularCoreSAML.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> loadCurrentReport()
+        public async Task< Models.Common.Response<PbEmbedDto>> loadCurrentReport()
         {
-            try
-            {
                 var ReportId = _configuration.GetSection("ConnectionPowerBi:ReportCurrentId").Get<string>();
                 var WorkspaceId = _configuration.GetSection("ConnectionPowerBi:WorkspaceId").Get<string>();
                 var result = await _powerBiService.GetTokenReporteAsync(ReportId, WorkspaceId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "Error al generar el token" });
-            }
+                return new Models.Common.Response<PbEmbedDto>(result);
 
         }
-        public async Task<IActionResult> loadArchiveReport()
+        public async Task< Models.Common.Response<PbEmbedDto>> loadArchivedReport()
         {
-            try
-            {
                 var ReportId = _configuration.GetSection("ConnectionPowerBi:ReportArchivedId").Get<string>();
                 var WorkspaceId = _configuration.GetSection("ConnectionPowerBi:WorkspaceId").Get<string>();
                 var result = await _powerBiService.GetTokenReporteAsync(ReportId, WorkspaceId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "Error al generar el token" });
-            }
+                return new Models.Common.Response<PbEmbedDto>(result);
 
         }
     }

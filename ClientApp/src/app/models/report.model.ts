@@ -1,5 +1,5 @@
 export interface Report {
-  EmbedToken: string;
-  EmbedUrl: string;
-  ReportId: string;
+  embedToken: string;
+  embedUrl: string;
+  reportId: string;
 }
