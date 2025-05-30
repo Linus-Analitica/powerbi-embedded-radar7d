@@ -1,5 +1,6 @@
-export interface ResponseApi {
-  data: any;
+export interface ResponseApi<T> {
+  succeeded:boolean;
+  data: T;
   message: string;
-  succeeded: boolean;
 }
+

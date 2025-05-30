@@ -5,10 +5,3 @@ export class UserClaims {
     email: string;
     profiles: string;
 }
-
-export interface SessionUser {
-  user: UserClaims;
-  token: string;
-  userId: string;
-  payrollId: string;
-}

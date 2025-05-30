@@ -60,6 +60,5 @@ namespace TemplateAngularCoreSAML.Common
 
             return userClaims;
         }
-
     }
 }
