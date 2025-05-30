@@ -1,0 +1,7 @@
+button {
+    width: fit-content;
+    align-self:flex-start;
+    /* position: fixed;
+    top: 9vh;
+    left: 1vw; */
+}
