@@ -8,6 +8,7 @@ using Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
+using TemplateAngularCoreSAML.Models.Common;
 
 using TemplateAngularCoreSAML.Models.Common;
 
@@ -25,9 +26,11 @@ namespace TemplateAngularCoreSAML.Common
     {
         private readonly IMemoryCache _cache;
         private readonly IConfiguration _config;
+        private readonly AuthHelper AuthHelper;
 
         public TokenHelper(IMemoryCache cache, IConfiguration config)
         {
+            AuthHelper = new AuthHelper(configuration, environment, httpContextAccessor);
             _cache = cache;
             _config = config;
         }
@@ -53,6 +56,7 @@ namespace TemplateAngularCoreSAML.Common
 
         public async Task<(string Token, string EmbedUrl)> GenerateEmbedTokenAsync(string reportId, string workspaceId, string accessToken)
         {
+            UserClaims userProfile = AuthHelper.GetClaims();
             var tokenCredentials = new TokenCredentials(accessToken, "Bearer");
             using var client = new PowerBIClient(new Uri("https://api.powerbi.com/"), tokenCredentials);
 
@@ -70,9 +74,9 @@ namespace TemplateAngularCoreSAML.Common
                 },
                 Identities = new List<EffectiveIdentity>{
                     new EffectiveIdentity{
-                        Username = "juan@example.com",
-                        Datasets = new List<string> { report.DatasetId },
-                        Roles = new List<string> { "Gerente" }
+                        username = userProfile.PayrollID,
+                        datasets = new List<string> { report.DatasetId },
+                        roles = new List<string> { report.UserType }
                     }
                 }
             };
