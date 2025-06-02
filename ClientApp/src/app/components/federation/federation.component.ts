@@ -16,10 +16,10 @@ export class FederationComponent {
       if (response.succeeded) {
         const session = this.sessionService.createSessionUser(response);
         if (session) {
-          this.notification.openSnackBar('Se obtiene el token del API', 'primary');
+          //this.notification.openSnackBar('Se obtiene el token del API', 'primary');
           this.router.navigate(['/home']);
         } else {
-          this.notification.openSnackBar('Error al crear la sesión en el API', 'warning');
+          this.notification.openSnackBar('Error al crear iniciar sesión', 'warning');
         }
       }
       else {
