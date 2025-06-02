@@ -20,7 +20,6 @@ namespace TemplateAngularCoreSAML
                 {
                     var env = context.HostingEnvironment;
 
-                    // Construir config para poder leer KeyVaultUri desde appsettings.{env}.json
                     var builtConfig = config.Build();
 
                     if (env.IsProduction())
