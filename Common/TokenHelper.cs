@@ -63,9 +63,11 @@ namespace TemplateAngularCoreSAML.Common
 
             var report = await client.Reports.GetReportInGroupAsync(Guid.Parse(workspaceId), Guid.Parse(reportId));
 
-            var identity = new EffectiveIdentity(username: userProfile.PayrollID,datasets: new List<string> { report.DatasetId })
+            var identity = new EffectiveIdentity()
             {
-                Roles  = new List<string> { userProfile.UserType }
+                Username = userProfile.PayrollID,
+                Datasets = new List<string> { report.DatasetId },
+                Roles = new List<string> { userProfile.UserType }
             };
 
             var generateTokenRequestParameters = new GenerateTokenRequestV2
@@ -79,7 +81,7 @@ namespace TemplateAngularCoreSAML.Common
                 TargetWorkspaces = new List<GenerateTokenRequestV2TargetWorkspace>{
                     new GenerateTokenRequestV2TargetWorkspace { Id = Guid.Parse(workspaceId) }
                 },
-                Identities = new List<EffectiveIdentity>{ identity }
+                Identities = new List<EffectiveIdentity> { identity }
             };
 
             var embedToken = await client.EmbedToken.GenerateTokenAsync(generateTokenRequestParameters);
