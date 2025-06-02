@@ -54,10 +54,11 @@ namespace TemplateAngularCoreSAML
                     saml2Configuration.SingleLogoutDestination = new Uri(Configuration["Saml2:SingleLogoutDestination"]);
                     saml2Configuration.SignatureAlgorithm = Configuration["Saml2:SignatureAlgorithm"];
                     saml2Configuration.SignAuthnRequest = Convert.ToBoolean(Configuration["Saml2:SignAuthnRequest"]);
-                    saml2Configuration.SigningCertificate = CertificateUtil.Load(CommonHelper.GetCertificateAbsolutePath(Configuration["Saml2:SigningCertificateFile"]),
-                                                                                                                    Configuration["Saml2:SigningCertificatePassword"],
-                                                                                                                    X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet |
-                                                                                                                    X509KeyStorageFlags.PersistKeySet);
+                    saml2Configuration.SigningCertificate = new X509Certificate2(
+                        Convert.FromBase64String(Configuration["Saml2:SigningCertificate"]),
+                        Configuration["Saml2:SigningCertificatePassword"],
+                        X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet
+                    );
                     saml2Configuration.CertificateValidationMode = (X509CertificateValidationMode)Enum.Parse(typeof(X509CertificateValidationMode), Configuration["Saml2:CertificateValidationMode"]);
                     saml2Configuration.RevocationMode = (X509RevocationMode)Enum.Parse(typeof(X509RevocationMode), Configuration["Saml2:RevocationMode"]);
                     saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
@@ -171,8 +172,8 @@ namespace TemplateAngularCoreSAML
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
-                    spa.UseAngularCliServer(npmScript: "start");
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    //spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
         }
 
