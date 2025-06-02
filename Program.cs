@@ -25,6 +25,7 @@ namespace TemplateAngularCoreSAML
                     if (env.IsProduction())
                     {
                         var keyVaultUri = builtConfig["KeyVaultUri"];
+                        Console.WriteLine($"✔ Azure Key Vault agregado correctamente.{keyVaultUri}");
                         if (!string.IsNullOrEmpty(keyVaultUri))
                         {
                             config.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
