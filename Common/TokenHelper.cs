@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
 using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
 using Microsoft.Rest;
+using Microsoft.AspNetCore.Http;
 using Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
-using TemplateAngularCoreSAML.Models.Common;
-
 using TemplateAngularCoreSAML.Models.Common;
 
 namespace TemplateAngularCoreSAML.Common
@@ -28,7 +29,7 @@ namespace TemplateAngularCoreSAML.Common
         private readonly IConfiguration _config;
         private readonly AuthHelper AuthHelper;
 
-        public TokenHelper(IMemoryCache cache, IConfiguration config)
+        public TokenHelper(IMemoryCache cache, IConfiguration config, IConfiguration configuration, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             AuthHelper = new AuthHelper(configuration, environment, httpContextAccessor);
             _cache = cache;
@@ -61,6 +62,12 @@ namespace TemplateAngularCoreSAML.Common
             using var client = new PowerBIClient(new Uri("https://api.powerbi.com/"), tokenCredentials);
 
             var report = await client.Reports.GetReportInGroupAsync(Guid.Parse(workspaceId), Guid.Parse(reportId));
+
+            var identity = new EffectiveIdentity(username: userProfile.PayrollID,datasets: new List<string> { report.DatasetId })
+            {
+                roles  = new List<string> { userProfile.UserType }
+            };
+
             var generateTokenRequestParameters = new GenerateTokenRequestV2
             {
                 Reports = new List<GenerateTokenRequestV2Report>{
@@ -72,13 +79,7 @@ namespace TemplateAngularCoreSAML.Common
                 TargetWorkspaces = new List<GenerateTokenRequestV2TargetWorkspace>{
                     new GenerateTokenRequestV2TargetWorkspace { Id = Guid.Parse(workspaceId) }
                 },
-                Identities = new List<EffectiveIdentity>{
-                    new EffectiveIdentity{
-                        username = userProfile.PayrollID,
-                        datasets = new List<string> { report.DatasetId },
-                        roles = new List<string> { report.UserType }
-                    }
-                }
+                Identities = new List<EffectiveIdentity>{ identity }
             };
 
             var embedToken = await client.EmbedToken.GenerateTokenAsync(generateTokenRequestParameters);
