@@ -180,6 +180,9 @@ namespace TemplateAngularCoreSAML.Controllers
         {
             try
             {
+                var certBase64 = Configuration["Saml2:SigningCertificate"];
+                var certPassword = Configuration["Saml2:SigningCertificatePassword"];
+
                 var saml2Configuration = new Saml2Configuration
                 {
                     Issuer = Configuration["Saml2:Issuer"],
@@ -187,10 +190,13 @@ namespace TemplateAngularCoreSAML.Controllers
                     SingleLogoutDestination = new Uri(Configuration["Saml2:SingleLogoutDestination"]),
                     SignatureAlgorithm = Configuration["Saml2:SignatureAlgorithm"],
                     SignAuthnRequest = Convert.ToBoolean(Configuration["Saml2:SignAuthnRequest"]),
-                    SigningCertificate = CertificateUtil.Load(CommonHelper.GetCertificateAbsolutePath(Configuration["Saml2:SigningCertificateFile"]),
-                                                                                                                Configuration["Saml2:SigningCertificatePassword"],
-                                                                                                                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet |
-                                                                                                                X509KeyStorageFlags.PersistKeySet),
+                    SigningCertificate = new X509Certificate2(
+                        Convert.FromBase64String(Configuration["Saml2:SigningCertificate"]),
+                        Configuration["Saml2:SigningCertificatePassword"],
+                        X509KeyStorageFlags.Exportable |
+                        X509KeyStorageFlags.MachineKeySet |
+                        X509KeyStorageFlags.PersistKeySet
+                    ),
                     CertificateValidationMode = (X509CertificateValidationMode)Enum.Parse(typeof(X509CertificateValidationMode), Configuration["Saml2:CertificateValidationMode"]),
                     RevocationMode = (X509RevocationMode)Enum.Parse(typeof(X509RevocationMode), Configuration["Saml2:RevocationMode"])
                 };
