@@ -65,7 +65,7 @@ namespace TemplateAngularCoreSAML.Common
 
             var identity = new EffectiveIdentity(username: userProfile.PayrollID,datasets: new List<string> { report.DatasetId })
             {
-                roles  = new List<string> { userProfile.UserType }
+                Roles  = new List<string> { userProfile.UserType }
             };
 
             var generateTokenRequestParameters = new GenerateTokenRequestV2
