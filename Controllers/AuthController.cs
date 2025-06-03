@@ -101,71 +101,65 @@ namespace TemplateAngularCoreSAML.Controllers
         {
             var genericHttpRequest = Request.ToGenericHttpRequest();
 
+            // 🔁 Flujo SP-initiated (respuesta del IdP a nuestro logout)
             if (new Saml2PostBinding().IsResponse(genericHttpRequest) || new Saml2RedirectBinding().IsResponse(genericHttpRequest))
             {
-                // 🔁 Logout iniciado desde tu app (SP)
                 try
                 {
                     var saml2ConfigSP = GetNewSaml2Configuration();
                     saml2ConfigSP.SingleLogoutDestination = new Uri(SingleLogoutDestination);
 
-                    var logoutRequestSP = new Saml2LogoutRequest(saml2ConfigSP, User);
+                    var logoutResponse = new Saml2LogoutResponse(saml2ConfigSP);
 
-                    // 🔍 Detecta binding real
                     Saml2Binding binding;
                     if (new Saml2PostBinding().IsResponse(genericHttpRequest))
                         binding = new Saml2PostBinding();
-                    else
+                    else if (new Saml2RedirectBinding().IsResponse(genericHttpRequest))
                         binding = new Saml2RedirectBinding();
-
-                    binding.Unbind(genericHttpRequest, logoutRequestSP);
-                    await logoutRequestSP.DeleteSession(HttpContext);
-
-                    var logoutResponse = new Saml2LogoutResponse(saml2ConfigSP)
-                    {
-                        InResponseToAsString = logoutRequestSP.IdAsString,
-                        Status = Saml2StatusCodes.Success
-                    };
-
-                    binding.RelayState = binding.RelayState;
-
-                    // 🔄 Bind según tipo
-                    if (binding is Saml2PostBinding post)
-                        return post.Bind(logoutResponse).ToActionResult();
-                    else if (binding is Saml2RedirectBinding redirect)
-                        return redirect.Bind(logoutResponse).ToActionResult();
                     else
-                        return BadRequest("Binding desconocido");
+                        return BadRequest("No SAMLResponse found in SP-initiated logout.");
+
+                    binding.Unbind(genericHttpRequest, logoutResponse);
+                    
+
+                    if (binding is Saml2PostBinding post)
+                        return post.ToActionResult();
+                    else if (binding is Saml2RedirectBinding redirect)
+                        return redirect.ToActionResult();
+                    else
+                        return BadRequest("No valid binding in SP-initiated logout.");
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Exception Auth/SingleLogout | flujo SP");
+                    Log.Error(e, "❌ Exception Auth/SingleLogout | SP-initiated");
                     return Problem(title: "Error SP-initiated logout", statusCode: 400, detail: e.ToString());
                 }
             }
+
+            // 🔁 Flujo IdP-initiated (el IdP inició el logout y te notifica)
             else
             {
-                // 🔁 Logout iniciado desde el IdP (IdP-initiated)
                 try
                 {
                     var saml2ConfigIdP = GetNewSaml2Configuration();
                     saml2ConfigIdP.SingleLogoutDestination = new Uri(SingleLogoutDestinationReturn);
 
-                    var logoutRequestIdP = new Saml2LogoutRequest(saml2ConfigIdP, User);
+                    var logoutRequest = new Saml2LogoutRequest(saml2ConfigIdP, User);
 
-                    // 🔍 Detecta binding real
                     Saml2Binding binding;
                     if (new Saml2PostBinding().IsRequest(genericHttpRequest))
                         binding = new Saml2PostBinding();
-                    else
+                    else if (new Saml2RedirectBinding().IsRequest(genericHttpRequest))
                         binding = new Saml2RedirectBinding();
+                    else
+                        return BadRequest("No SAMLRequest found in IdP-initiated logout.");
 
-                    binding.Unbind(genericHttpRequest, logoutRequestIdP);
-                    await logoutRequestIdP.DeleteSession(HttpContext);
+                    binding.Unbind(genericHttpRequest, logoutRequest);
+                  
 
                     var logoutResponse = new Saml2LogoutResponse(saml2ConfigIdP)
                     {
-                        InResponseToAsString = logoutRequestIdP.IdAsString,
+                        InResponseToAsString = logoutRequest.IdAsString,
                         Status = Saml2StatusCodes.Success
                     };
 
@@ -176,11 +170,11 @@ namespace TemplateAngularCoreSAML.Controllers
                     else if (binding is Saml2RedirectBinding redirect)
                         return redirect.Bind(logoutResponse).ToActionResult();
                     else
-                        return BadRequest("Binding desconocido");
+                        return BadRequest("No valid binding in IdP-initiated logout.");
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Exception Auth/SingleLogout | flujo IdP");
+                    Log.Error(e, "❌ Exception Auth/SingleLogout | IdP-initiated");
                     return Problem(title: "Error IdP-initiated logout", statusCode: 400, detail: e.ToString());
                 }
             }
