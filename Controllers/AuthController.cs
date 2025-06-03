@@ -120,14 +120,10 @@ namespace TemplateAngularCoreSAML.Controllers
                         return BadRequest("No SAMLResponse found in SP-initiated logout.");
 
                     binding.Unbind(genericHttpRequest, logoutResponse);
-                    
 
-                    if (binding is Saml2PostBinding post)
-                        return post.ToActionResult();
-                    else if (binding is Saml2RedirectBinding redirect)
-                        return redirect.ToActionResult();
-                    else
-                        return BadRequest("No valid binding in SP-initiated logout.");
+                    // Aquí ya no se hace ningún Bind() ni ToActionResult()
+                    // Solo terminamos y redirigimos al home o a una página de "sesión cerrada"
+                    return Redirect("~/"); // o "~/logged-out"
                 }
                 catch (Exception e)
                 {
@@ -155,7 +151,7 @@ namespace TemplateAngularCoreSAML.Controllers
                         return BadRequest("No SAMLRequest found in IdP-initiated logout.");
 
                     binding.Unbind(genericHttpRequest, logoutRequest);
-                  
+
 
                     var logoutResponse = new Saml2LogoutResponse(saml2ConfigIdP)
                     {
