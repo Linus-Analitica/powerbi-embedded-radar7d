@@ -101,78 +101,54 @@ namespace TemplateAngularCoreSAML.Controllers
         {
             var genericHttpRequest = Request.ToGenericHttpRequest();
 
-            if (new Saml2PostBinding().IsResponse(genericHttpRequest) || new Saml2RedirectBinding().IsResponse(genericHttpRequest))
+            try
             {
-                try
-                {                                    
-                    // Flujo del Single Logout desde el Service Provider (SP). Lo dispara esta misma aplicación.
-                    var saml2ConfigSP = GetNewSaml2Configuration();
-                    // En este escenario es necesario que el Single Logout Destination sea: https://amfsdevl.tec.mx/nidp/saml2/slo
-                    saml2ConfigSP.SingleLogoutDestination = new Uri(SingleLogoutDestination);
+                bool isResponse = new Saml2PostBinding().IsResponse(genericHttpRequest) ||
+                    new Saml2RedirectBinding().IsResponse(genericHttpRequest);
 
-                    //Log.Information($"Ingreso a Auth/SingleLogout, dentro del If | Logout desde el Service Provider (SP). " +
-                    //                $"El usuario esta autenticado: {User.Identity.IsAuthenticated} | " +
-                    //                $"SingleLogoutDestination. {saml2ConfigSP.SingleLogoutDestination.AbsoluteUri}.");
+                var saml2Config = GetNewSaml2Configuration();
 
-                    var logoutRequestSP = new Saml2LogoutRequest(saml2ConfigSP, User);
-                    var requestBindingSP = new Saml2PostBinding();
-                    requestBindingSP.Unbind(Request.ToGenericHttpRequest(), logoutRequestSP);
-                    await logoutRequestSP.DeleteSession(HttpContext);
+                saml2Config.SingleLogoutDestination = isResponse
+                    ? new Uri(SingleLogoutDestination)
+                    : new Uri(SingleLogoutDestinationReturn);
 
-                    var responsebindingSP = new Saml2PostBinding
-                    {
-                        RelayState = requestBindingSP.RelayState
-                    };
-                    var saml2LogoutResponse = new Saml2LogoutResponse(saml2ConfigSP)
-                    {
-                        InResponseToAsString = logoutRequestSP.IdAsString,
-                        Status = Saml2StatusCodes.Success
-                    };
+                var logoutRequest = new Saml2LogoutRequest(saml2Config, User);
 
-                    return requestBindingSP.Bind(saml2LogoutResponse).ToActionResult();
-
+                Saml2Binding binding;
+                if (new Saml2PostBinding().IsRequest(genericHttpRequest) || new Saml2PostBinding().IsResponse(genericHttpRequest)){
+                    binding = new Saml2PostBinding();
                 }
-                catch (Exception e)
+                else if (new Saml2RedirectBinding().IsRequest(genericHttpRequest) || new Saml2RedirectBinding().IsResponse(genericHttpRequest)){
+                    binding = new Saml2RedirectBinding();
+                }
+                else
                 {
-                    Log.Error(e, "Exception Auth/SingleLogout | dentro del If | Logout desde el Service Provider (SP).");
+                    Log.Error("No se pudo determinar el binding SAML.");
+                    return BadRequest("Binding SAML no soportado.");
+                }
+
+                binding.Unbind(genericHttpRequest, logoutRequest);
+                await logoutRequest.DeleteSession(HttpContext);
+
+                var logoutResponse = new Saml2LogoutResponse(saml2Config)
+                {
+                    InResponseToAsString = logoutRequest.IdAsString,
+                    Status = Saml2StatusCodes.Success
+                };
+
+                binding.RelayState = binding.RelayState;
+
+                if (binding is Saml2PostBinding postBinding){return postBinding.Bind(logoutResponse).ToActionResult();}
+                else if (binding is Saml2RedirectBinding redirectBinding){return redirectBinding.Bind(logoutResponse).ToActionResult();}
+                else{
+                    Log.Error("No se pudo determinar el binding para enviar la respuesta.");
                     return BadRequest();
                 }
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    // Flujo del Single Logout desde el Identity Provider (IdP). Lo dispara NAM posterior al Logout desde otra aplicación.
-                    var saml2ConfigIdP = GetNewSaml2Configuration();
-                    // En este escenario es necesario que el Single Logout Destination sea: https://amfsdevl.tec.mx/nidp/saml2/slo_return
-                    saml2ConfigIdP.SingleLogoutDestination = new Uri(SingleLogoutDestinationReturn);
-
-                    //Log.Information($"Ingreso a Auth/SingleLogout, dentro del Else | Logout desde el Identity Provider (IdP). " +
-                    //                $"El usuario esta autenticado: {User.Identity.IsAuthenticated} | " +
-                    //                $"SingleLogoutDestination. {saml2ConfigIdP.SingleLogoutDestination.AbsoluteUri}.");
-
-                    var logoutRequestIdP = new Saml2LogoutRequest(saml2ConfigIdP, User);
-                    var requestBindingIdP = new Saml2PostBinding();
-                    requestBindingIdP.Unbind(Request.ToGenericHttpRequest(), logoutRequestIdP);
-                    await logoutRequestIdP.DeleteSession(HttpContext);
-
-                    var responsebindingSP = new Saml2PostBinding
-                    {
-                        RelayState = requestBindingIdP.RelayState
-                    };
-                    var saml2LogoutResponseIdP = new Saml2LogoutResponse(saml2ConfigIdP)
-                    {
-                        InResponseToAsString = logoutRequestIdP.IdAsString,
-                        Status = Saml2StatusCodes.Success
-                    };
-
-                    return requestBindingIdP.Bind(saml2LogoutResponseIdP).ToActionResult();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Exception Auth/SingleLogout | dentro del Else | Logout desde el Identity Provider (IdP).");
-                    return BadRequest();
-                }              
+                Log.Error(e, "Exception Auth/SingleLogout");
+                return BadRequest();
             }
         }
 
@@ -203,7 +179,7 @@ namespace TemplateAngularCoreSAML.Controllers
                 saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
                 var entityDescriptor = new EntityDescriptor();
                 entityDescriptor.ReadIdPSsoDescriptorFromUrl(new Uri(Configuration["Saml2:IdPMetadata"]));
-                
+
                 if (entityDescriptor.IdPSsoDescriptor != null)
                 {
                     saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First().Location;
