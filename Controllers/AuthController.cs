@@ -101,54 +101,88 @@ namespace TemplateAngularCoreSAML.Controllers
         {
             var genericHttpRequest = Request.ToGenericHttpRequest();
 
-            try
+            if (new Saml2PostBinding().IsResponse(genericHttpRequest) || new Saml2RedirectBinding().IsResponse(genericHttpRequest))
             {
-                bool isResponse = new Saml2PostBinding().IsResponse(genericHttpRequest) ||
-                    new Saml2RedirectBinding().IsResponse(genericHttpRequest);
-
-                var saml2Config = GetNewSaml2Configuration();
-
-                saml2Config.SingleLogoutDestination = isResponse
-                    ? new Uri(SingleLogoutDestination)
-                    : new Uri(SingleLogoutDestinationReturn);
-
-                var logoutRequest = new Saml2LogoutRequest(saml2Config, User);
-
-                Saml2Binding binding;
-                if (new Saml2PostBinding().IsRequest(genericHttpRequest) || new Saml2PostBinding().IsResponse(genericHttpRequest)){
-                    binding = new Saml2PostBinding();
-                }
-                else if (new Saml2RedirectBinding().IsRequest(genericHttpRequest) || new Saml2RedirectBinding().IsResponse(genericHttpRequest)){
-                    binding = new Saml2RedirectBinding();
-                }
-                else
+                // 🔁 Logout iniciado desde tu app (SP)
+                try
                 {
-                    Log.Error("No se pudo determinar el binding SAML.");
-                    return BadRequest("Binding SAML no soportado.");
+                    var saml2ConfigSP = GetNewSaml2Configuration();
+                    saml2ConfigSP.SingleLogoutDestination = new Uri(SingleLogoutDestination);
+
+                    var logoutRequestSP = new Saml2LogoutRequest(saml2ConfigSP, User);
+
+                    // 🔍 Detecta binding real
+                    Saml2Binding binding;
+                    if (new Saml2PostBinding().IsResponse(genericHttpRequest))
+                        binding = new Saml2PostBinding();
+                    else
+                        binding = new Saml2RedirectBinding();
+
+                    binding.Unbind(genericHttpRequest, logoutRequestSP);
+                    await logoutRequestSP.DeleteSession(HttpContext);
+
+                    var logoutResponse = new Saml2LogoutResponse(saml2ConfigSP)
+                    {
+                        InResponseToAsString = logoutRequestSP.IdAsString,
+                        Status = Saml2StatusCodes.Success
+                    };
+
+                    binding.RelayState = binding.RelayState;
+
+                    // 🔄 Bind según tipo
+                    if (binding is Saml2PostBinding post)
+                        return post.Bind(logoutResponse).ToActionResult();
+                    else if (binding is Saml2RedirectBinding redirect)
+                        return redirect.Bind(logoutResponse).ToActionResult();
+                    else
+                        return BadRequest("Binding desconocido");
                 }
-
-                binding.Unbind(genericHttpRequest, logoutRequest);
-                await logoutRequest.DeleteSession(HttpContext);
-
-                var logoutResponse = new Saml2LogoutResponse(saml2Config)
+                catch (Exception e)
                 {
-                    InResponseToAsString = logoutRequest.IdAsString,
-                    Status = Saml2StatusCodes.Success
-                };
-
-                binding.RelayState = binding.RelayState;
-
-                if (binding is Saml2PostBinding postBinding){return postBinding.Bind(logoutResponse).ToActionResult();}
-                else if (binding is Saml2RedirectBinding redirectBinding){return redirectBinding.Bind(logoutResponse).ToActionResult();}
-                else{
-                    Log.Error("No se pudo determinar el binding para enviar la respuesta.");
-                    return BadRequest();
+                    Log.Error(e, "Exception Auth/SingleLogout | flujo SP");
+                    return Problem(title: "Error SP-initiated logout", statusCode: 400, detail: e.ToString());
                 }
             }
-            catch (Exception e)
+            else
             {
-                Log.Error(e, "Exception Auth/SingleLogout");
-                return BadRequest();
+                // 🔁 Logout iniciado desde el IdP (IdP-initiated)
+                try
+                {
+                    var saml2ConfigIdP = GetNewSaml2Configuration();
+                    saml2ConfigIdP.SingleLogoutDestination = new Uri(SingleLogoutDestinationReturn);
+
+                    var logoutRequestIdP = new Saml2LogoutRequest(saml2ConfigIdP, User);
+
+                    // 🔍 Detecta binding real
+                    Saml2Binding binding;
+                    if (new Saml2PostBinding().IsRequest(genericHttpRequest))
+                        binding = new Saml2PostBinding();
+                    else
+                        binding = new Saml2RedirectBinding();
+
+                    binding.Unbind(genericHttpRequest, logoutRequestIdP);
+                    await logoutRequestIdP.DeleteSession(HttpContext);
+
+                    var logoutResponse = new Saml2LogoutResponse(saml2ConfigIdP)
+                    {
+                        InResponseToAsString = logoutRequestIdP.IdAsString,
+                        Status = Saml2StatusCodes.Success
+                    };
+
+                    binding.RelayState = binding.RelayState;
+
+                    if (binding is Saml2PostBinding post)
+                        return post.Bind(logoutResponse).ToActionResult();
+                    else if (binding is Saml2RedirectBinding redirect)
+                        return redirect.Bind(logoutResponse).ToActionResult();
+                    else
+                        return BadRequest("Binding desconocido");
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Exception Auth/SingleLogout | flujo IdP");
+                    return Problem(title: "Error IdP-initiated logout", statusCode: 400, detail: e.ToString());
+                }
             }
         }
 
