@@ -38,9 +38,9 @@ namespace TemplateAngularCoreSAML.Common
                         var claims = HttpContextAccessor.HttpContext.User.Identities.First().Claims.ToList();
 
                         /* Con el siguiente código se recorre cada uno de los claims y se escriben en el Log */
-                        // StringBuilder message = new();
-                        // claims.ForEach(claim => { message.AppendFormat($"[ {claim.Type} - {claim.Value} ]", "\t"); });
-                        // Log.Information($"Claims | {message}");
+                        StringBuilder message = new();
+                        claims.ForEach(claim => { message.AppendFormat($"[ {claim.Type} - {claim.Value} ]", "\t"); });
+                        Log.Information($"Claims | {message}");
                         Log.Information($"read Claims");
                         userClaims.PersonID = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("IDPersona".ToLower()))?.Value;
                         userClaims.UserType = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("TipoUsuario".ToLower()))?.Value;
