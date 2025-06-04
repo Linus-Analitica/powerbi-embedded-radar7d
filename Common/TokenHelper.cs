@@ -67,7 +67,7 @@ namespace TemplateAngularCoreSAML.Common
             {
                 Username = userProfile.PayrollID,
                 Datasets = new List<string> { report.DatasetId },
-                Roles = new List<string> { userProfile.UserType }
+                Roles = new List<string> { userProfile.UserType=="Colaborador"?"FiltroMentor":"FiltroAlumno" }
             };
 
             var generateTokenRequestParameters = new GenerateTokenRequestV2

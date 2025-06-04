@@ -1,5 +1,5 @@
 <bmb-top-bar [positionButtonMenu]="'left'"
-  [userInformation]="{name: 'Francisco Javier Ibáñez Canales', image: 'https://lh3.googleusercontent.com/a/ACg8ocKd7zbG20fVU7yrqVclowySuJ5RDGZC5d1Ht50MawbM3sxbGCo=s288-c-no', role: 'Alumno'}"
+  [userInformation]="{name: session.email, image: 'https://lh3.googleusercontent.com/a/ACg8ocKd7zbG20fVU7yrqVclowySuJ5RDGZC5d1Ht50MawbM3sxbGCo=s288-c-no', role: 'Alumno'}"
   [hasLogoutButton]="true" [appName]="'Power BI Embedded'" [appSubTitle]="'Proyecto Radar'" [lang]="'es'"
   (logOut)="logOut($event)">
 </bmb-top-bar>
