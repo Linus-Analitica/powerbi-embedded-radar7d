@@ -13,7 +13,7 @@ export class TopBarComponent {
   public session: UserClaims;
 
   constructor(private sessionService: SessionService) {
-    this.sessionService.sessionData;
+    this.session=this.sessionService.sessionData;
   }
 
   logOut(_: Event): void {

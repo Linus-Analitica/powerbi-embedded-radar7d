@@ -45,7 +45,7 @@ namespace TemplateAngularCoreSAML.Controllers
             {
                 Email = userProfile.Email,
                 PayrollID = userProfile.PayrollID,
-                PersonID = userProfile.PersonID,
+                PersonID = userProfile.Profiles,
             };
 
             /*var json = JsonSerializer.Serialize(userProfileDto);
