@@ -11,12 +11,12 @@ using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-using TemplateAngularCoreSAML.Common;
-using TemplateAngularCoreSAML.Models.Common;
-using TemplateAngularCoreSAML.Models.Dtos;
-using TemplateAngularCoreSAML.Services;
+using Radar7D.Common;
+using Radar7D.Models.Common;
+using Radar7D.Models.Dtos;
+using Radar7D.Services;
 
-namespace TemplateAngularCoreSAML.Controllers
+namespace Radar7D.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

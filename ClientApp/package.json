@@ -1,11 +1,11 @@
 {
-  "name": "templateangularcoresaml",
+  "name": "Radar7D",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --poll=1000",
     "build": "ng build",
-    "build:ssr": "ng run TemplateAngularCoreSAML:server:dev",
+    "build:ssr": "ng run Radar7D:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

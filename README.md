@@ -97,7 +97,7 @@ Al equipo de Identidad se le comparte el archivo: **certificate.crt** y en el ap
 
 El metadata es un archivo XML que contiene la configuración de la federación de la aplicación web *(Service Provider o SP)*. Este archivo se comparte al equipo de Identidad y ellos lo cargan dentro de NAM.
 
-Para generar uno, se puede tomar como base este ejemplo: [Metadata](https://github.com/ti-tecnologico-de-monterrey-oficial/template-net-core-angular-saml2/blob/develop/TemplateAngularCoreSAML/App_Data/Metadata/Metadata_DEV_TemplateAngularCoreSAML.xml) y realizar los siguientes ajustes:
+Para generar uno, se puede tomar como base este ejemplo: [Metadata](https://github.com/ti-tecnologico-de-monterrey-oficial/template-net-core-angular-saml2/blob/develop/Radar7D/App_Data/Metadata/Metadata_DEV_Radar7D.xml) y realizar los siguientes ajustes:
 
   * En el atributo **entityID** del elemento **<md:EntityDescriptor>** se debe colocar la URL del servicio.
   * Dentro del elemento **<ds:X509Certificate>** se debe colocar el **certificate.crt** que se genero previamente. Este archivo se puede abrir con un editor de texto como Notepad.

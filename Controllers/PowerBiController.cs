@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 using Serilog;
 using System;
-using TemplateAngularCoreSAML.Common;
-using TemplateAngularCoreSAML.Services;
-using TemplateAngularCoreSAML.Models.Dtos;
+using Radar7D.Common;
+using Radar7D.Services;
+using Radar7D.Models.Dtos;
 
-namespace TemplateAngularCoreSAML.Controllers
+namespace Radar7D.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
     public static class ClaimsTransform
     {

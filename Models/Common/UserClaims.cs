@@ -1,4 +1,4 @@
-﻿namespace TemplateAngularCoreSAML.Models.Common
+﻿namespace Radar7D.Models.Common
 {
     public class UserClaims
     {

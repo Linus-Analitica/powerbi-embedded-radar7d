@@ -6,9 +6,9 @@ using Serilog;
 using System;
 using System.Linq;
 using System.Text;
-using TemplateAngularCoreSAML.Models.Common;
+using Radar7D.Models.Common;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
     public class AuthHelper
     {

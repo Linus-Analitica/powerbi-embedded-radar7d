@@ -11,9 +11,9 @@ using Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
-using TemplateAngularCoreSAML.Models.Common;
+using Radar7D.Models.Common;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
 
     public interface ITokenHelper

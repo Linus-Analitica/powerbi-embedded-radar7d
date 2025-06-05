@@ -17,9 +17,9 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
-using TemplateAngularCoreSAML.Common;
+using Radar7D.Common;
 
-namespace TemplateAngularCoreSAML.Controllers
+namespace Radar7D.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

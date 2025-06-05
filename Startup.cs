@@ -21,10 +21,10 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
-using TemplateAngularCoreSAML.Common;
-using TemplateAngularCoreSAML.Services;
+using Radar7D.Common;
+using Radar7D.Services;
 
-namespace TemplateAngularCoreSAML
+namespace Radar7D
 {
     public class Startup
     {

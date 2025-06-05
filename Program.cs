@@ -5,7 +5,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
 
-namespace TemplateAngularCoreSAML
+namespace Radar7D
 {
     public class Program
     {

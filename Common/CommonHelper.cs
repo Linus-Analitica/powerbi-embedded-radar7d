@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
     public static class CommonHelper
     {
