@@ -49,8 +49,7 @@ namespace Radar7D.Common
 
             var result = await clientApp.AcquireTokenForClient(new[] { "https://analysis.windows.net/powerbi/api/.default" }).ExecuteAsync();
 
-            _cache.Set("PowerBiAccessToken", result.AccessToken, TimeSpan.FromMinutes(50)); // o result.ExpiresIn
-            Log.Error($"EL ACCESS TOKEN ES {result.AccessToken}");
+            _cache.Set("PowerBiAccessToken", result.AccessToken, TimeSpan.FromMinutes(120));
             return result.AccessToken;
 
         }

@@ -120,10 +120,7 @@ namespace Radar7D.Controllers
                         return BadRequest("No SAMLResponse found in SP-initiated logout.");
 
                     binding.Unbind(genericHttpRequest, logoutResponse);
-
-                    // Aquí ya no se hace ningún Bind() ni ToActionResult()
-                    // Solo terminamos y redirigimos al home o a una página de "sesión cerrada"
-                    return Redirect("~/"); // o "~/logged-out"
+                    return Redirect("~/");
                 }
                 catch (Exception e)
                 {
