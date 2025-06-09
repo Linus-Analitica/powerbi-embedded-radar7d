@@ -32,7 +32,7 @@ jobs:
       
       - name: Clean extra files before packaging
         run: |
-          rm -f ./publish/TemplateAngularCoreSAML.runtimeconfig.json
+          find ./publish -name "*.runtimeconfig.json" ! -name "Radar7D.runtimeconfig.json" -delete
 
       - name: Zip published output
         run: zip -r deploy-package.zip ./publish
