@@ -29,6 +29,10 @@ jobs:
 
       - name: Publish project
         run: dotnet publish ./Radar7D.csproj --configuration Release --output ./publish
+      
+      - name: Clean extra files before packaging
+        run: |
+          rm -f ./publish/TemplateAngularCoreSAML.runtimeconfig.json
 
       - name: Zip published output
         run: zip -r deploy-package.zip ./publish
