@@ -1,4 +1,4 @@
-﻿namespace TemplateAngularCoreSAML.Models.Dtos
+﻿namespace Radar7D.Models.Dtos
 {
     public class UserProfileDto
     {

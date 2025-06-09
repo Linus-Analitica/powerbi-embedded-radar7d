@@ -1,9 +1,9 @@
 
-using TemplateAngularCoreSAML.Models.Dtos;
-using TemplateAngularCoreSAML.Common;
+using Radar7D.Models.Dtos;
+using Radar7D.Common;
 using System.Threading.Tasks;
 
-namespace TemplateAngularCoreSAML.Services
+namespace Radar7D.Services
 {
     public interface IPowerBiService
     {

@@ -11,12 +11,12 @@ using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-using TemplateAngularCoreSAML.Common;
-using TemplateAngularCoreSAML.Models.Common;
-using TemplateAngularCoreSAML.Models.Dtos;
-using TemplateAngularCoreSAML.Services;
+using Radar7D.Common;
+using Radar7D.Models.Common;
+using Radar7D.Models.Dtos;
+using Radar7D.Services;
 
-namespace TemplateAngularCoreSAML.Controllers
+namespace Radar7D.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -48,15 +48,16 @@ namespace TemplateAngularCoreSAML.Controllers
                 PersonID = userProfile.PersonID,
             };
 
-            var json = JsonSerializer.Serialize(userProfileDto);
+            /*var json = JsonSerializer.Serialize(userProfileDto);
             var encrypterData = CryptographycFunctions.Encrypt(json, Configuration["ConnectionApi:ClientSecret"]);
             if (!encrypterData.Key) { return new Models.Common.Response<UserClaims>("Error al enviar la información al servidor"); }
             
             SendEncryptDto sendEncryptDto = new(encrypterData.Value);
 
             var jsonData = JsonSerializer.Serialize(sendEncryptDto);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
+            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+*/
             return new Models.Common.Response<UserClaims>(userProfile);
         }
 

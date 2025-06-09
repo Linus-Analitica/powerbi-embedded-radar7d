@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System;
 
-namespace TemplateAngularCoreSAML.Services
+namespace Radar7D.Services
 {
     public static class CryptographycFunctions
     {
@@ -15,7 +15,7 @@ namespace TemplateAngularCoreSAML.Services
                 var tag = new byte[16];
                 var plainData = Encoding.UTF8.GetBytes(Text);
                 var cipherBytes = new byte[plainData.Length];
-                var nonceBytes = Encoding.UTF8.GetBytes(GenerateSha256Hash("TemplateAngularCoreSaml")[..12]);
+                var nonceBytes = Encoding.UTF8.GetBytes(GenerateSha256Hash("Radar7D")[..12]);
                 using var cipher = new AesGcm(Encoding.UTF8.GetBytes(sKey)[..16], 16);
                 // 2. Encriptamos
                 cipher.Encrypt(nonceBytes, plainData, cipherBytes, tag);
@@ -54,7 +54,7 @@ namespace TemplateAngularCoreSAML.Services
                 var cipherBytes = encryptedBytes[..^16]; //tag size is 16
                 var tag = encryptedBytes[^16..];
                 var decryptedData = new byte[cipherBytes.Length];
-                var nonceBytes = Encoding.UTF8.GetBytes(GenerateSha256Hash("TemplateAngularCoreSaml")[..12]);
+                var nonceBytes = Encoding.UTF8.GetBytes(GenerateSha256Hash("Radar7D")[..12]);
                 using var cipher = new AesGcm(Encoding.UTF8.GetBytes(sKey)[..16], 16);
                 // 2. Desencriptamos
                 cipher.Decrypt(nonceBytes, cipherBytes, tag, decryptedData);

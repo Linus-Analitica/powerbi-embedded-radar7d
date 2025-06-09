@@ -1,16 +1,14 @@
 ﻿using System;
 using System.IO;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
     public static class CommonHelper
     {
         public static string GetCertificateAbsolutePath(string certificateRelativePath)
         {
-            // BaseDirectory apunta a la raíz de la app publicada (ej. wwwroot en Azure)
             string basePath = AppContext.BaseDirectory;
 
-            // Elimina slash inicial en caso de estar presente
             if (certificateRelativePath.StartsWith("/") || certificateRelativePath.StartsWith("\\"))
             {
                 certificateRelativePath = certificateRelativePath.Substring(1);

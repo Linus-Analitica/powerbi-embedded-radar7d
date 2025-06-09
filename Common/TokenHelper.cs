@@ -11,9 +11,9 @@ using Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
-using TemplateAngularCoreSAML.Models.Common;
+using Radar7D.Models.Common;
 
-namespace TemplateAngularCoreSAML.Common
+namespace Radar7D.Common
 {
 
     public interface ITokenHelper
@@ -49,8 +49,7 @@ namespace TemplateAngularCoreSAML.Common
 
             var result = await clientApp.AcquireTokenForClient(new[] { "https://analysis.windows.net/powerbi/api/.default" }).ExecuteAsync();
 
-            _cache.Set("PowerBiAccessToken", result.AccessToken, TimeSpan.FromMinutes(50)); // o result.ExpiresIn
-            Log.Error($"EL ACCESS TOKEN ES {result.AccessToken}");
+            _cache.Set("PowerBiAccessToken", result.AccessToken, TimeSpan.FromMinutes(120));
             return result.AccessToken;
 
         }
@@ -67,7 +66,7 @@ namespace TemplateAngularCoreSAML.Common
             {
                 Username = userProfile.PayrollID,
                 Datasets = new List<string> { report.DatasetId },
-                Roles = new List<string> { userProfile.UserType }
+                Roles = new List<string> { userProfile.UserType=="Colaborador"?"FiltroMentor":"FiltroAlumno" }
             };
 
             var generateTokenRequestParameters = new GenerateTokenRequestV2

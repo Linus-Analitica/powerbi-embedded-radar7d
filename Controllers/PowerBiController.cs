@@ -6,16 +6,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 using Serilog;
 using System;
-using TemplateAngularCoreSAML.Common;
-using TemplateAngularCoreSAML.Services;
-using TemplateAngularCoreSAML.Models.Dtos;
+using Radar7D.Common;
+using Radar7D.Services;
+using Radar7D.Models.Dtos;
 
-namespace TemplateAngularCoreSAML.Controllers
+namespace Radar7D.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-#if !DEBUG // Con esta condicíón, solo se va a ejecutar este código cuando se ejecute en modo Release.
-    [Authorize] // Este decorador es el que hace que se ejecute la configuración de la federación y muestre la pantalla del login. 
+#if !DEBUG
+    [Authorize]
 #endif
     [EnableCors("CorsPolicy")]
 
