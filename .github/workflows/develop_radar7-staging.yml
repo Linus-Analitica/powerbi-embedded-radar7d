@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'radar7-staging'
           slot-name: 'Production'
-          package: dotnet-app
+          package:  ./dotnet-app  # ← CORREGIDO
