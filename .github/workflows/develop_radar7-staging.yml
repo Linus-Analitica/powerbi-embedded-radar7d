@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy ASP.Net Core app to Azure Web App - radar7-staging
 
 on:
@@ -10,44 +13,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
 
-      - name: Restore dependencies
-        run: dotnet restore ./Radar7D.csproj
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
-      - name: Build project
-        run: dotnet build ./Radar7D.csproj --configuration Release --no-restore
-
-      - name: Clean build output
-        run: |
-          rm -rf ./bin
-          rm -rf ./obj
-          rm -rf ./publish
-          
-      - name: Publish project
-        run: dotnet publish ./Radar7D.csproj --configuration Release --output ./publish
-      
-      - name: Clean extra files before packaging
-        run: |
-          find ./publish -name "*.runtimeconfig.json" ! -name "Radar7D.runtimeconfig.json" -delete
-
-      - name: Zip published output
-        run: zip -r deploy-package.zip ./publish
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: deploy-package
-          path: deploy-package.zip
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,15 +42,15 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: deploy-package
-
+          name: .net-app
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -78,4 +64,5 @@ jobs:
         with:
           app-name: 'radar7-staging'
           slot-name: 'Production'
-          package: deploy-package.zip
+          package: .
+          
