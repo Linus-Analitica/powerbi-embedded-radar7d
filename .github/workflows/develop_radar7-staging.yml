@@ -13,7 +13,8 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
@@ -29,11 +30,14 @@ jobs:
       - name: Publish project
         run: dotnet publish ./Radar7D.csproj --configuration Release --output ./publish
 
+      - name: Zip published output
+        run: zip -r deploy-package.zip ./publish
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: dotnet-app
-          path: ./publish
+          name: deploy-package
+          path: deploy-package.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,7 +53,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: dotnet-app
+          name: deploy-package
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -64,4 +68,4 @@ jobs:
         with:
           app-name: 'radar7-staging'
           slot-name: 'Production'
-          package:  ./dotnet-app  # ← CORREGIDO
+          package: deploy-package.zip
