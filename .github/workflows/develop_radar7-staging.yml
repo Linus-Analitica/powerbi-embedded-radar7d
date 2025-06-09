@@ -27,6 +27,12 @@ jobs:
       - name: Build project
         run: dotnet build ./Radar7D.csproj --configuration Release --no-restore
 
+      - name: Clean build output
+        run: |
+          rm -rf ./bin
+          rm -rf ./obj
+          rm -rf ./publish
+          
       - name: Publish project
         run: dotnet publish ./Radar7D.csproj --configuration Release --output ./publish
       
