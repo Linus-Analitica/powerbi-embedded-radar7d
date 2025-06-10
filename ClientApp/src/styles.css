@@ -3,10 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('./assets/Bulb.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+  background-color: #0f0d10!important;
 }
 
 
