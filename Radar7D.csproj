@@ -13,9 +13,9 @@
   </PropertyGroup>
 
 <PropertyGroup>
-  <AngularEnvironment Condition="'$(AngularEnvironment)' == ''">prod</AngularEnvironment>
-  <AngularEnvironment Condition="'$(Configuration)' == 'Debug'">devl</AngularEnvironment>
-  <AngularEnvironment Condition="'$(Configuration)' == 'Release'">pprod</AngularEnvironment>
+  <AngularEnvironment Condition="'$(AngularEnvironment)' == ''">Production</AngularEnvironment>
+  <AngularEnvironment Condition="'$(Configuration)' == 'Debug'">Develop</AngularEnvironment>
+  <AngularEnvironment Condition="'$(Configuration)' == 'Release'">PreProd</AngularEnvironment>
 </PropertyGroup>
 
 
