@@ -47,17 +47,6 @@ namespace Radar7D.Controllers
                 PayrollID = userProfile.PayrollID,
                 PersonID = userProfile.PersonID,
             };
-
-            /*var json = JsonSerializer.Serialize(userProfileDto);
-            var encrypterData = CryptographycFunctions.Encrypt(json, Configuration["ConnectionApi:ClientSecret"]);
-            if (!encrypterData.Key) { return new Models.Common.Response<UserClaims>("Error al enviar la información al servidor"); }
-            
-            SendEncryptDto sendEncryptDto = new(encrypterData.Value);
-
-            var jsonData = JsonSerializer.Serialize(sendEncryptDto);
-
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-*/
             return new Models.Common.Response<UserClaims>(userProfile);
         }
 

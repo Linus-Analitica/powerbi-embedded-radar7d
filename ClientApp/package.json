@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --poll=1000",
-    "build": "ng build",
+    "build:devl": "ng build --configuration development",
+    "build:pprod": "ng build --configuration preproduction",
+    "build:prod": "ng build --configuration production",
     "build:ssr": "ng run Radar7D:server:dev",
     "test": "ng test",
     "lint": "ng lint",

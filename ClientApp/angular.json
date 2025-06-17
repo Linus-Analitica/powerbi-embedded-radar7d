@@ -44,9 +44,7 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "allowedCommonJsDependencies": [
-              "@angular/platform-server"
-            ]
+            "allowedCommonJsDependencies": ["@angular/platform-server"]
           },
           "configurations": {
             "production": {
@@ -69,6 +67,36 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "outputHashing": "none",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.devl.ts"
+                }
+              ]
+            },
+            "preproduction": {
+              "buildOptimizer": true,
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "vendorChunk": false,
+              "extractLicenses": true,
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.pprod.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": ""

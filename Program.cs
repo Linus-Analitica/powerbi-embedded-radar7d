@@ -22,7 +22,7 @@ namespace Radar7D
 
                     var builtConfig = config.Build();
 
-                    if (env.IsProduction())
+                    if (!env.IsDevelopment())
                     {
                         var keyVaultUri = builtConfig["KeyVaultUri"];
                         Console.WriteLine($"✔ Azure Key Vault agregado correctamente.{keyVaultUri}");

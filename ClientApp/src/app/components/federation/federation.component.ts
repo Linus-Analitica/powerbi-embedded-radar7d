@@ -12,11 +12,9 @@ export class FederationComponent {
   constructor(private sessionService: SessionService, private notification: NotificationSnackbarService, private router: Router) {
     // Se obtiene los userclaims y el jwt del api
     this.sessionService.getSessionUser().subscribe((response: ResponseApi<UserClaims>) => {
-      console.log(response)
       if (response.succeeded) {
         const session = this.sessionService.createSessionUser(response);
         if (session) {
-          //this.notification.openSnackBar('Se obtiene el token del API', 'primary');
           this.router.navigate(['/home']);
         } else {
           this.notification.openSnackBar('Error al crear iniciar sesión', 'warning');
