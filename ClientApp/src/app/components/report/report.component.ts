@@ -36,7 +36,6 @@ export class ReportComponent implements OnInit {
 
   loadCurrentReport() {
     this.reportBIService.loadCurrentReport<Report>().subscribe((response) => {
-      console.log(response);
        const config: powerbi.IEmbedConfiguration = {
           type: 'report',
           id: response.reportId,
@@ -58,14 +57,11 @@ export class ReportComponent implements OnInit {
     );
 
     pbiService.embed(this.reportContainer.nativeElement, config);
-
-      console.log(response);
     });
   }
 
    loadArchivedReport() {
     this.reportBIService.loadArchivedReport<Report>().subscribe((response) => {
-      console.log(response);
        const config: powerbi.IEmbedConfiguration = {
           type: 'report',
           id: response.reportId,
@@ -87,8 +83,6 @@ export class ReportComponent implements OnInit {
     );
 
     pbiService.embed(this.reportContainer.nativeElement, config);
-
-      console.log(response);
     });
   }
   goBack(){

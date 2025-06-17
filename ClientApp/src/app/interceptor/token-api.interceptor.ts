@@ -4,7 +4,6 @@ import { SessionService } from "../services/session.service";
 import { environment } from "../../environments/environment";
 
 export const tokenApiInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log(environment)
   const sessionService = inject(SessionService);
   const usuario = sessionService.sessionData;
   return next(req);
