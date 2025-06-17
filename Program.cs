@@ -19,13 +19,10 @@ namespace Radar7D
             .ConfigureAppConfiguration((context, config) =>
                 {
                     var env = context.HostingEnvironment;
-
                     var builtConfig = config.Build();
-                    Console.WriteLine("Entorno ASPNETCORE_ENVIRONMENT: " + env.EnvironmentName);
                     if (!env.IsDevelopment())
                     {
                         var keyVaultUri = builtConfig["KeyVaultUri"];
-                        Console.WriteLine($"✔ Azure Key Vault agregado correctamente.{keyVaultUri}");
                         if (!string.IsNullOrEmpty(keyVaultUri))
                         {
                             config.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
