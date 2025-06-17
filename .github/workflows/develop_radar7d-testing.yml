@@ -33,7 +33,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp /p:AngularEnvironment=Develop  #<= cambiar aqui dependiendo del la rama
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp /p:AngularEnvironment=Develop  #<= cambiar aqui dependiendo del la rama PreProd, Production
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
