@@ -29,8 +29,6 @@ jobs:
       - name: Crear appsettings.json base
         run: echo '${{ secrets.APPSETTINGS_DEVELOP_JSON  }}' > ./appsettings.json
         
-      - name: Verificar appsettings.json cargado
-        run: cat ./appsettings.json
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
