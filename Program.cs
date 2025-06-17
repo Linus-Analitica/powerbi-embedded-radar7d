@@ -22,7 +22,6 @@ namespace Radar7D
 
                     var builtConfig = config.Build();
                     Console.WriteLine("Entorno ASPNETCORE_ENVIRONMENT: " + env.EnvironmentName);
-
                     if (!env.IsDevelopment())
                     {
                         var keyVaultUri = builtConfig["KeyVaultUri"];
