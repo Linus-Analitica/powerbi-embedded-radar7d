@@ -21,6 +21,7 @@ namespace Radar7D
                     var env = context.HostingEnvironment;
 
                     var builtConfig = config.Build();
+                    Console.WriteLine("Entorno ASPNETCORE_ENVIRONMENT: " + env.EnvironmentName);
 
                     if (!env.IsDevelopment())
                     {
