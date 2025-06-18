@@ -1,6 +1,10 @@
-<button bmbButton appearance="primary" icon="home" size="small" position="left" [case]="false" isToggleActive="false"
-  enableButtonToggle="false" (click)="goBack()">
-  Volver
+<button bmbButton appearance="primary" icon="home" size="small" position="left" [case]="false"
+isToggleActive="false" enableButtonToggle="false" (click)="loadCurrentReport()">
+Actual
+</button>
+<button bmbButton appearance="primary" icon="home" size="small" position="left" [case]="false"
+isToggleActive="false" enableButtonToggle="false" (click)="loadArchivedReport()">
+Historico
 </button>
 <div class="row h-100 justify-content-center align-items-center">
 

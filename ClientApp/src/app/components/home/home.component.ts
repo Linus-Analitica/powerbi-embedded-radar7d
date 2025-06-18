@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   constructor( private router: Router) { }
 
   ngOnInit() {
+    this.gotoCurrentReport();
   }
 
   gotoCurrentReport(){
