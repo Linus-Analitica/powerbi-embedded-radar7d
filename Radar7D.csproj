@@ -12,12 +12,6 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
-<PropertyGroup>
-  <AngularEnvironment Condition="'$(AngularEnvironment)' == ''">Production</AngularEnvironment>
-  <AngularEnvironment Condition="'$(Configuration)' == 'Debug'">Develop</AngularEnvironment>
-  <AngularEnvironment Condition="'$(Configuration)' == 'Release'">PreProd</AngularEnvironment>
-</PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
@@ -57,11 +51,15 @@
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
 
+
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <!-- <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" /> -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:$(AngularEnvironment)" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:PROD" Condition="'$(Build_DefinitionName)' == 'BackOfficePROD' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:PPRD" Condition="'$(Build_DefinitionName)' == 'BackOfficePPRD' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:DEVL" Condition="'$(Build_DefinitionName)' == 'BackOfficeDEVL' " />
+
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
     <!-- Include the newly-built files in the publish output -->

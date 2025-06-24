@@ -57,7 +57,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.production.ts"
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -68,20 +68,14 @@
               "vendorChunk": false,
               "buildOptimizer": true
             },
-            "develop": {
+            "development": {
               "buildOptimizer": false,
               "optimization": false,
               "sourceMap": true,
               "namedChunks": true,
               "vendorChunk": true,
               "extractLicenses": false,
-              "outputHashing": "none",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.develop.ts"
-                }
-              ]
+              "outputHashing": "none"
             },
             "preproduction": {
               "buildOptimizer": true,
@@ -94,7 +88,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.preproduction.ts"
+                  "with": "src/environments/environment.pprod.ts"
                 }
               ]
             }
