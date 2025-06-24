@@ -42,15 +42,6 @@
   </ItemGroup>
 
 <ItemGroup Condition="'$(Configuration)'=='Debug'">
-  <None Update="App_Data\Certificados\certificate.crt">
-    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-  </None>
-  <None Update="App_Data\Certificados\certificate.pfx">
-    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-  </None>
-  <None Update="App_Data\Certificados\private.key">
-    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-  </None>
   <None Update="Logs\info.txt">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>

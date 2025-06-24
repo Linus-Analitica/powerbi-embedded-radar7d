@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {  UserClaims } from '../models/user-claims.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ResponseApi } from '../models/response-api.model';
-import { parseJwt } from '../functions/DecodeJwt';
-import { TokenData } from '../models/token-data.model';
+
 
 @Injectable({
   providedIn: 'root'
