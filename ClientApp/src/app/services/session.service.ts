@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {  UserClaims } from '../models/user-claims.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ResponseApi } from '../models/response-api.model';
+import { PowerBiConfig } from '../models/powerbi-config.model';
 
 
 @Injectable({
@@ -21,6 +22,12 @@ export class SessionService {
     const url = `Home/GetUserClaims/`;
       return this.http.get<UserClaims>(url);
   }
+
+     // Nuevo método para la configuración de Power BI
+     public getPowerBiConfig() {
+      const url = `Home/GetPowerBiConfig/`;
+      return this.http.get<PowerBiConfig>(url);
+    }
 
   public logout() {
     sessionStorage.removeItem("sessionUser");

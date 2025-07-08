@@ -56,19 +56,32 @@ namespace Radar7D.Common
 
         public async Task<(string Token, string EmbedUrl)> GenerateEmbedTokenAsync(string reportId, string workspaceId, string accessToken)
         {
+            // 1. Obtener los claims del usuario actual
             UserClaims userProfile = AuthHelper.GetClaims();
+
+            // 2. Leer el código de función de mentor desde la configuración
+            string mentorFuncionId = _config["Roles:MentorFuncionId"];
+
+            // 3. Verificar si el usuario es colaborador
+            bool esColaborador = userProfile.UserType == "Colaborador";
+
+            // 4. Verificar si el colaborador es mentor
+            bool esMentor = esColaborador && userProfile.ITESMProfFuncion == mentorFuncionId;
+
+            // 5. Crear el cliente de Power BI y obtener el reporte
             var tokenCredentials = new TokenCredentials(accessToken, "Bearer");
             using var client = new PowerBIClient(new Uri("https://api.powerbi.com/"), tokenCredentials);
-
             var report = await client.Reports.GetReportInGroupAsync(Guid.Parse(workspaceId), Guid.Parse(reportId));
 
+            // 6. Asignar el rol de RLS según la lógica
             var identity = new EffectiveIdentity()
             {
                 Username = userProfile.PayrollID,
                 Datasets = new List<string> { report.DatasetId },
-                Roles = new List<string> { userProfile.UserType=="Colaborador"?"FiltroMentor":"FiltroAlumno" }
+                Roles = new List<string> { esMentor ? "FiltroMentor" : "FiltroAlumno" }
             };
 
+            // 7. Preparar la petición para generar el token de embed
             var generateTokenRequestParameters = new GenerateTokenRequestV2
             {
                 Reports = new List<GenerateTokenRequestV2Report>{
@@ -83,8 +96,10 @@ namespace Radar7D.Common
                 Identities = new List<EffectiveIdentity> { identity }
             };
 
+            // 8. Generar el token de embed
             var embedToken = await client.EmbedToken.GenerateTokenAsync(generateTokenRequestParameters);
 
+            // 9. Retornar el token de embed y la URL de embed
             return (embedToken.Token, report.EmbedUrl);
         }
     }

@@ -50,5 +50,21 @@ namespace Radar7D.Controllers
             return new Models.Common.Response<UserClaims>(userProfile);
         }
 
+                // NUEVO ENDPOINT PARA CONFIGURACIÓN DE POWER BI
+        [HttpGet]
+        public IActionResult GetPowerBiConfig()
+        {
+            var configData = new
+            {
+                TenantID = Configuration["ConnectionPowerBi:TenantId"],
+                ClientID = Configuration["ConnectionPowerBi:ClientId"],
+                ClientSecret = Configuration["ConnectionPowerBi:ClientSecret"], // ¡Cuidado con exponer esto!
+                WorkspaceId = Configuration["ConnectionPowerBi:WorkspaceId"],
+                ReportCurrentId = Configuration["ConnectionPowerBi:ReportCurrentId"],
+                ReportArchivedId = Configuration["ConnectionPowerBi:ReportArchivedId"]
+            };
+            return Ok(configData);
+        }
+
     }
 }

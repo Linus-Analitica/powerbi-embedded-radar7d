@@ -41,6 +41,9 @@ namespace Radar7D.Common
                         userClaims.PayrollID = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("nameidentifier".ToLower()))?.Value;
                         userClaims.Email = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("NAM_upn".ToLower()))?.Value;
                         userClaims.Profiles = claims?.FirstOrDefault(x => x.Type.ToLower().Contains("perfiles".ToLower()))?.Value;
+                        
+                        userClaims.ITESMProfFuncionDesc = claims?.FirstOrDefault(x => x.Type == "ITESMProfFuncionDesc")?.Value;
+                        userClaims.ITESMProfFuncion = claims?.FirstOrDefault(x => x.Type == "ITESMProfFuncion")?.Value;
                     }
                 }
             }

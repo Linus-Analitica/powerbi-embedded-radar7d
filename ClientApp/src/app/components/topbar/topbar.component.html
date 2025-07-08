@@ -1,7 +1,8 @@
-<bmb-top-bar [positionButtonMenu]="'left'"
-  [userInformation]="{name: session.email, 
-  image: 'https://lh3.googleusercontent.com/a/ACg8ocKd7zbG20fVU7yrqVclowySuJ5RDGZC5d1Ht50MawbM3sxbGCo=s288-c-no', 
-  role: session.userType}"
-  [hasLogoutButton]="true" [appName]="'Power BI Embedded'" [appSubTitle]="'Proyecto Radar'" [lang]="'es'"
-  (logOut)="logOut($event)">
-</bmb-top-bar>
+<div style="position: relative;">
+  <img src="assets/images/tec-logo.png" alt="Logo Tec" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); height: 40px; z-index: 10;">
+  <bmb-top-bar [positionButtonMenu]="'left'"
+    [userInformation]="{name: session.email, image: 'assets/avatar.png', role: session.userType}"
+    [hasLogoutButton]="true" [appName]="'Power BI Embedded'" [appSubTitle]="'Proyecto Radar'" [lang]="'es'"
+    (logOut)="logOut($event)">
+  </bmb-top-bar>
+</div>
