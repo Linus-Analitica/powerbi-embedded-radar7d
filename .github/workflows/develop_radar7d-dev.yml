@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - radar7d-dev
+name: Build and deploy ASP.Net Core app to Azure Web App - radar7dev
 
 on:
   push:
@@ -10,10 +10,36 @@ on:
   workflow_dispatch:
 
 jobs:
+
+  update-settings:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: List files in the directory
+        uses: actions/checkout@v4
+     
+      - name: List files in the directory
+        run: |
+          ls -R
+
+      - name: Show appsettings.json content Old
+        run: |
+          cat 'appsettings.json'
+          
+      - name: Download settings from GitHub
+        run: echo '${{vars.DEVL_JSON}}' > appsettings.json
+
+      - name: Show appsettings.json content New
+        run: |
+          cat 'appsettings.json'
+
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read #This is required for actions/checkout
+
+    env:
+      Build_DefinitionName: 'BackOfficePPRD'
 
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +48,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
+          include-prerelease: true
+
+      - name: Show appsettings.json content OldBuild
+        run: |
+          cat 'appsettings.json'
+          
+      - name: Download settings from GitHub
+        run: echo '${{vars.DEVL_JSON}}' > appsettings.json
+
+      - name: Show appsettings.json content NewBuild
+        run: |
+          cat 'appsettings.json'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -29,19 +67,28 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: Show appsettings.json content BUILD
+        run: |
+          cat 'appsettings.json'
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    # permissions:
+    #   id-token: write #This is required for requesting the JWT
+    #   contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
@@ -49,18 +96,18 @@ jobs:
         with:
           name: .net-app
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A4A52D3E15594D9D9DD13218E4799ABC }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1EAA74319D7546508A0E5236E717DD39 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_536965DECBD34244A9A6981033467DA1 }}
+      # - name: Login to Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EE80CF012FFA46449C0E74C8D407392F }}
+      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6A817F7C07CA42179A9B6D1BA4A7021B }}
+      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_496D02EC46D64E62B1FCC2FD4A50DDBB }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'radar7d-dev'
+          app-name: 'radar7dev'
           slot-name: 'Production'
           package: .
           
