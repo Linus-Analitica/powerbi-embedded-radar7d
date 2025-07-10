@@ -64,10 +64,10 @@ jobs:
           cat 'appsettings.json'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release /p:Build_DefinitionName=${{ env.Build_DefinitionName }}
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp /p:Build_DefinitionName=${{ env.Build_DefinitionName }}
 
       - name: Copy appsettings.json to publish directory
         run: cp appsettings.json ${{env.DOTNET_ROOT}}/myapp/
@@ -88,7 +88,9 @@ jobs:
     environment:
       name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
