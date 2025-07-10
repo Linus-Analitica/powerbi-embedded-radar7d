@@ -26,8 +26,8 @@ jobs:
 
       - name: Crear appsettings.json desde variable segura
         run: |
-          cat <<EOF > ./appsettings.json
-          $APPSETTINGS_DEVELOP_JSON
+          cat > appsettings.json <<EOF
+          ${APPSETTINGS_DEVELOP_JSON}
           EOF
 
       - name: Verificar appsettings.json
