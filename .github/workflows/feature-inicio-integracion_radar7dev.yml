@@ -8,53 +8,20 @@ on:
     branches:
       - develop
   workflow_dispatch:
-<<<<<<< HEAD
 
 jobs:
-=======
-  
-jobs:
-
-  update-settings:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: List files in the directory
-        uses: actions/checkout@v4
-     
-      - name: List files in the directory
-        run: |
-          ls -R
-
-      - name: Show appsettings.json content Old
-        run: |
-          cat 'appsettings.json'
-          
-      - name: Download settings from GitHub
-        run: echo '${{vars.DEVL_JSON}}' > appsettings.json
-
-      - name: Show appsettings.json content New
-        run: |
-          cat 'appsettings.json'
-        
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
   build:
     runs-on: ubuntu-latest
     env:
-<<<<<<< HEAD
       BUILD_DEFINITION_NAME: BackOfficeDEVL # puede ser BackOfficePPRD, BackOfficePROD
 
     permissions:
       contents: read #This is required for actions/checkout
-=======
-      Build_DefinitionName: 'BackOfficePPRD'
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-<<<<<<< HEAD
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0"
@@ -62,37 +29,12 @@ jobs:
       - name: Crear appsettings.json base
         run: echo '${{vars.DEVL_JSON}}' > appsettings.json
         #run: echo "$APPSETTINGS_DEVELOP_JSON" > ./appsettings.json
-=======
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.x'
-          include-prerelease: true
-
-      - name: Show appsettings.json content OldBuild
-        run: |
-          cat 'appsettings.json'
-          
-      - name: Download settings from GitHub
-        run: echo '${{vars.DEVL_JSON}}' > appsettings.json
-
-      - name: Show appsettings.json content NewBuild
-        run: |
-          cat 'appsettings.json'
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-<<<<<<< HEAD
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp /p:Build_DefinitionName=${{ env.BUILD_DEFINITION_NAME }} #<= cambiar aqui dependiendo del la rama PreProd, Production
-=======
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Show appsettings.json content BUILD
-        run: |
-          cat 'appsettings.json'
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -104,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -115,7 +57,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-<<<<<<< HEAD
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -124,21 +65,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B391EECB9E384AD49F804891AE75F921 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DA6D1A58581D4DBFB97C9710B5BB4905 }}
 
-=======
-          
-
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-<<<<<<< HEAD
           app-name: "radar7d-testing"
           slot-name: "Production"
           package: .
-=======
-          app-name: 'radar7d-testing'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6B28BF934079476DA47961C2275D033B }}
-          package: .
->>>>>>> fdc5a1610205035d8c3672f9c4a50fa8b31f2aa7
