@@ -1,3 +1,4 @@
+
 export interface PowerBiConfig {
     TenantID: string;
     ClientID: string;
